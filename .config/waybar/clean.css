@@ -1,0 +1,240 @@
+@keyframes blink {
+  to {
+    background-color: #000000;
+    color: #ffffff;
+  }
+}
+
+button {
+  border-radius: 0;
+  box-shadow: none;
+  background-color: transparent;
+  border: 0;
+}
+
+window#waybar {
+  background-color: transparent;
+  color: rgba(255,255,255,0.6);
+  transition-property: background-color;
+  transition-duration: .5s;
+  margin: 0;
+  padding: 0;
+}
+window#waybar>box {
+  padding: 0px 0px;
+  /* background: rgba(15, 15, 15, 1); */
+  margin: 0px;
+  margin-bottom: 0px;
+}
+window#waybar .modules-left,
+window#waybar .modules-center,
+window#waybar .modules-right
+{
+  border-radius: 0px 0px 35px 35px;
+  border-left: 4px solid @quaternary-color;
+  border-right: 4px solid @quaternary-color;
+  border-bottom: 4px solid @quaternary-color;
+}
+#workspaces button {
+  margin: 11px 4px;
+  min-height: 16px;
+  min-width: 16px;
+  background: @accent-active-color;
+  padding: 0px 0px;
+  font-size: 0px;
+  border-radius: 16px;
+  border: none;
+  transition: min-width .1112s ease, background-color .12s ease;
+}
+
+#workspaces button.urgent {
+  color: #f38ba8;
+}
+
+#workspaces button.empty {
+  background: @tertiary-color;
+}
+
+#workspaces button.visible {
+  background-color: @secondary-color;
+  min-width: 47px;
+  transition: min-width .12s ease;
+}
+
+#workspaces button:hover:not(.visible) {
+  padding: 0px 0px;
+  background: @accent-inactive-color;
+  box-shadow: none;
+  border: none;
+}
+#language,
+#custom-updates,
+#idle_inhibitor,
+#custom-power,
+#custom-bluetooth,
+#custom-notification,
+#custom-updates,
+#power-profiles-daemon,
+#workspaces,
+#clock,
+#battery,
+#cpu,
+#backlight,
+#network,
+#pulseaudio,
+#custom-power,
+#tray {
+  color: #ffffff;
+  opacity: 1;
+  transition: color .15s ease;
+  font-family: 'JetBrainsMonoNF-Regular';
+  font-size: 22px;
+  font-weight: 500;
+  padding: 0px 12px;
+  background: @primary-color;
+}
+#custom-bluetooth
+{
+  color: #0082FC;
+}
+#power-profiles-daemon,
+#battery {
+  font-family: 'JetBrainsMonoNF-Regular';
+}
+
+#clock {
+  font-size: 20px
+}
+
+#power-profiles-daemon { font-size: 24px }
+#battery { font-size: 27px }
+
+#language:hover,
+#custom-updates:hover,
+#custom-notification:hover,
+#idle_inhibitor:hover,
+#custom-power:hover,
+#clock:hover,
+#custom-bluetooth:hover,
+#custom-updates:hover,
+#power-profiles-daemon:hover,
+#backlight:hover,
+#pulseaudio:hover,
+#network:hover,
+#battery:hover {
+  color: @accent-inactive-color;
+}
+
+/* Styling */
+#custom-updates,
+#clock {
+  border-radius: 0px 0px 0px 30px
+}
+
+#power-profiles-daemon,
+#custom-power,
+#custom-notification {
+  border-radius: 0px 0px 30px 0px
+}
+
+/* Padding fixes */
+#workspaces {
+  padding: 3px 18px;
+  margin: 0;
+  border-radius: 0px 0px 30px 30px
+}
+
+#clock {
+  padding-left: 34px;
+}
+
+#custom-notification {
+  padding: 0;
+  margin: 0;
+  padding-right: 36px;
+  padding-left: 4px;
+}
+
+#tray {
+  padding: 0;
+  margin: 0;
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+#custom-updates {
+  padding-right: 14px;
+  padding-left: 28px
+}
+
+#custom-bluetooth { padding-right: 9px; }
+
+#language {
+  padding-left: 1px;
+  padding-right: 3px;
+  min-width: 37px;
+}
+
+#idle_inhibitor {
+  padding-left: 4px;
+}
+
+#network {
+  padding-right: 13px;
+  padding-left: 6px
+}
+
+#backlight { margin-right: 7px }
+
+#pulseaudio { padding-right: 4px }
+
+
+#battery { padding-right: 12px; }
+
+#power-profiles-daemon {
+  padding-right: 24px;
+  padding-bottom: 1px 
+}
+
+#tray>.passive { -gtk-icon-effect: dim }
+
+#tray>.needs-attention {
+  -gtk-icon-effect: highlight;
+  color: #f38ba8;
+}
+
+/* States styles */
+#network.disconnected,
+#pulseaudio.muted {
+  color: #808080
+}
+
+#battery.charging,
+#battery.plugged {
+  color: #a6e3a1;
+}
+
+#battery.warning:not(.charging) {
+  color: #eebd4b;
+}
+
+#battery.critical:not(.charging) {
+  color: #f38ba8
+}
+
+@keyframes blink-update {
+  to {
+    background-color: dodgerblue;
+  }
+}
+
+#custom-updates {
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+#custom-updates.pending-updates {
+  animation-name: blink-update;
+  animation-duration: 3s;
+}

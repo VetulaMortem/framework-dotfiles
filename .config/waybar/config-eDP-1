@@ -1,0 +1,213 @@
+{
+    "layer": "bottom",
+    "output":["eDP-1"],
+    //"position": "bottom",
+    // "width": 1800,
+    "spacing": 0,
+    "modules-left": [
+        "hyprland/workspaces"
+    ],
+    "modules-center": [
+        "clock",
+	//"hyprland/language",
+        "custom/notification"
+    ],
+    "modules-right": [
+        "custom/updates",
+        "tray",
+        "custom/bluetooth",
+        "idle_inhibitor",
+        "pulseaudio",
+	"network",
+	"battery",
+	"power-profiles-daemon"
+    ],
+    // Modules configuration
+    "hyprland/workspaces": {
+        "disable-scroll": false,
+        "format": "{icon}",
+        "format-icons": {
+            "1": "I",
+            "2": "II",
+            "3": "III",
+            "4": "IV",
+            "5": "V",
+            "6": "VI",
+            "7": "VII",
+            "8": "VIII",
+            "9": "IX",
+            "10": "X",
+            "default": ""
+        },
+       "persistent-workspaces": {
+             "*": 10
+       }
+    },
+    "tray": {
+        "icon-size": 18,
+        "spacing": 8
+    },
+    "hyprland/language": {
+        "format": " {}",
+        "format-en": "us",
+        "format-es": "la",
+        "keyboard-name": "at-translated-set-2-keyboard",
+        "on-click": "hyprctl switchxkblayout at-translated-set-2-keyboard next"
+    },
+    "clock": {
+        "tooltip-format": "<tt>{calendar}</tt>",
+        "format": "{:%b %d   %H:%M}",
+        "tooltip": false,
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+        "on-click": "gnome-calendar",
+        "on-click-right": "kitty --class clock -o background_opacity=0.0 -e peaclock",
+    },
+    "backlight": {
+        //"format": "{percent}%  {icon}",
+        "format": "{icon}",
+        "format-icons": ["󰃞", "󰃟", "󰃠"],
+        "tooltip": false,
+        "tooltip-format": "{percent}%",
+        "on-scroll-up": "swayosd-client --brightness +5",
+        "on-scroll-down": "swayosd-client --brightness -5",
+        "scroll-step": 5
+    },
+    "battery": {
+        "states": {
+            "good": 90,
+            "warning": 30,
+            "critical": 15
+        },
+        "format": "{capacity}% {icon}",
+        "format-full": "{icon}",
+        "format-charging": "{capacity}% {icon}",
+        "format-plugged": "󱤁",
+        "format-icons": ["", "", "", "", ""],
+        "interval": 3,
+        "tooltip-format": "Battery: {capacity}%",
+        "tooltip": true,
+        "on-scroll-up": "bash ~/.config/hypr/scripts/raise_brightness.sh",
+        "on-scroll-down": "bash ~/.config/hypr/scripts/lower_brightness.sh"
+    },
+    "network": {
+        "format-wifi": "",
+        "format-ethernet": "",
+        "tooltip-format": "{essid}",
+        "format-linked": "{ifname} (No IP) ",
+        "format-disconnected": "",
+        "interval": 5,
+        "tooltip": true,
+        "on-click": "kitty --class wifi -e nmtui"
+    },
+    "pulseaudio": {
+        "format": "{volume}% {icon}",
+        //"format": "{icon}",
+        "format-bluetooth": " {icon}",
+        "nospacing": 1,
+        "tooltip": false,
+        "tooltip-format": "{volume}%",
+        "format-muted": "{icon}",
+        "format-icons": {
+            "headphone": "",
+            "default": ["󰕿","󰖀","󰕾"]
+        },
+        "on-click": "swayosd-client --output-volume mute-toggle",
+        "on-click-right": "pavucontrol",
+        "on-scroll-up": "bash ~/.config/hypr/scripts/raise_volume.sh",
+        "on-scroll-down": "bash ~/.config/hypr/scripts/lower_volume.sh",
+        "scroll-step": 5
+    },
+    "power-profiles-daemon": {
+        "format": "{icon}",
+        "tooltip-format": "Power profile: {profile}",
+        "tooltip": true,
+        "format-icons": {
+            "default": "󰓅",
+            "performance": "󰓅",
+            "balanced": "󰾅",
+            "power-saver": "󰾆"
+        }
+    },
+    "custom/notification": {
+        "tooltip": false,
+        "format": "{icon}",
+        "format-icons": {
+          "notification": "󱅫",
+          "none": "󰂚",
+          "dnd-notification": "󰂛",
+          "dnd-none": "󰂛",
+          "inhibited-notification": "󱅫",
+          "inhibited-none": "󱅫",
+          "dnd-inhibited-notification": "<span foreground='red'><sup></sup></span>",
+          "dnd-inhibited-none": ""
+        },        "return-type": "json",
+        "exec-if": "which swaync-client",
+        "exec": "swaync-client -swb",
+        "escape": true,
+        "on-click": "swaync-client -t -sw",
+        "on-click-right": "swaync-client -d -sw"
+    },
+    "custom/bluetooth": {
+        "format": "",
+        "tooltip": false,
+        "on-click": "blueberry"
+    },
+    "custom/power": {
+        "format": "",
+        "tooltip": false,
+        "on-click": "rofi -show power-menu -modi power-menu:rofi-power-menu"
+    },
+    "idle_inhibitor": {
+        "format": "{icon}",
+        "format-icons": {
+            "activated": "󰈈",
+            "deactivated": "󰈉"
+        }
+    },
+    "custom/updates": {
+        "format": "{} 󰏔",
+        "return-type": "json",
+        "format-icons": {
+            "has-updates": "󰚰",
+            "updated": ""
+        },
+        "on-click": "kitty --class update -o background_opacity=1.0 -e bash ~/.config/hypr/scripts/update_system.sh",
+        "exec-if": "which waybar-module-pacman-updates",
+        "exec": "waybar-module-pacman-updates --interval-seconds 5 --network-interval-seconds 300"
+    },
+    "custom/rounded1": {
+      "format": "",
+      "tooltip": false
+    },
+    "custom/rounded2": {
+      "format": "",
+      "tooltip": false
+    },
+    "custom/rounded3": {
+      "format": "",
+      "tooltip": false
+    }, 
+    "custom/rounded4": {
+      "format": "",
+      "tooltip": false
+    }, 
+    "custom/rounded5": {
+      "format": "",
+      "tooltip": false
+    },
+    "custom/power": {
+        "format" : "⏻ ",
+		"tooltip": false,
+		"menu": "on-click",
+		"menu-file": "$HOME/.config/waybar/power_menu.xml", // Menu file in resources folder
+		"menu-actions": {
+			"shutdown": "shutdown",
+			"reboot": "reboot",
+			"suspend": "systemctl suspend",
+			"hibernate": "systemctl hibernate",
+			"wayquit": "pkill waybar",
+			"winboot": "pkexec grub-reboot 2 && reboot"
+		}
+    }
+    
+}

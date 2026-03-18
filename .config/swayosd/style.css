@@ -1,0 +1,30 @@
+@import url("file:///home/vetula/.assets/css/colortheme.css");
+window#osd {
+  padding: 3px 20px;
+  border: 3px solid @quaternary-color;
+  background-color: @primary-color; }
+  window#osd #container {
+    margin: 16px; }
+  window#osd image,
+  window#osd label {
+    color: @secondary-color;
+    }
+  window#osd progressbar:disabled,
+  window#osd image:disabled {
+    opacity: 0.5; 
+    }
+  window#osd progressbar {
+    min-height: 6px;
+    border-radius: 999px;
+    background: transparent;
+    border: 1px solid @quaternary-color; }
+  window#osd trough {
+    min-height: inherit;
+    border-radius: inherit;
+    background: @accent-inactive-color; 
+    border: none; }
+  window#osd progress {
+    min-height: inherit;
+    border-radius: inherit;
+    background: #6bb8af; 
+    border: none; }

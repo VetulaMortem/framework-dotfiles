@@ -1,0 +1,46 @@
+@import url("file:///home/vetula/.assets/css/colortheme.css");
+@import url("file:///home/vetula/.assets/css/colortheme-transparent.css");
+.control-center {
+	background-color: @accent-active-color-tr;
+	border: 3px solid @quaternary-color;
+	color:#ffffff;
+	border-radius: 12px 0px 0px 12px;
+	box-shadow: 0px 15pc 13px rgba(10,13,18,.4);
+}
+.notification-row:focus, .notification-row:hover, .notification-row:selected {
+	background-color: #transparent;
+}
+.notification {
+	background-color: @accent-inactive-color-tr;
+	border: 3px solid @quaternary-color;
+	color:#ffffff;
+	border-radius: 12px;
+	box-shadow: 0px 15pc 13px rgba(10,13,18,.4);
+}
+.notification-background
+{
+	background: transparent;
+
+}
+.notification-row .notification-background .notification .notification-default-action .notification-content {
+  background: transparent;
+  border-radius: 12px;
+  padding: 8px 12px;
+}
+.control-center .control-center-list .notification-background .notification {
+  background: @accent-inactive-color;
+}
+.control-center .control-center-list .notification .notification-default-action:hover,
+.control-center .control-center-list .notification .notification-action:hover {
+  background-color: @accent-active-color;
+}
+.notification-group:focus {
+  background-color: #00000000;
+	border-radius: 12px;
+}
+.notification-group.collapsed:focus .notification{
+  background-color: #00000000;
+}
+.notification-group.collapsed:focus .notification .notification-default-action{
+  background-color: @accent-active-color;
+}
