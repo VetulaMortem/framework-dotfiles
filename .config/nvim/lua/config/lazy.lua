@@ -143,7 +143,11 @@ statusline.setup({
     end,
   },
 })
-
+require('nvim-treesitter').setup {
+  -- Directory to install parsers and queries to (prepended to `runtimepath` to have priority)
+  install_dir = vim.fn.stdpath('data') .. '/site'
+}
+require('nvim-treesitter').install { 'rust', 'javascript', 'zig','vim','hyprlang' }
 require("noice").setup({
   lsp = {
     -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
@@ -163,10 +167,9 @@ require("noice").setup({
   },
 })
 
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 
-require('nvim-treesitter').setup {
-  -- Directory to install parsers and queries to (prepended to `runtimepath` to have priority)
-  install_dir = vim.fn.stdpath('data') .. '/site'
-}
-
-require('nvim-treesitter').install { 'rust', 'javascript', 'zig' }
+vim.filetype.add({
+  pattern = { [".*/hyprland%.conf"] = "hyprlang" },
+})
