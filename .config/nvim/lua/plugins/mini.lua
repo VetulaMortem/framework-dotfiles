@@ -1,7 +1,7 @@
 return {
 	{
 		enabled = true,
-		'nvim-mini/mini.nvim', 
+		'nvim-mini/mini.nvim',  
 		version = '*', 
 		config = function()
 		require('mini.basics').setup()
@@ -54,6 +54,8 @@ return {
 		    end,
 		  },
 		})
+		local f = function(args) vim.b[args.buf].minitrailspace_disable = true end
+		vim.api.nvim_create_autocmd('User', { pattern = 'SnacksDashboardOpened', callback = f })
 		end,
 	}
 

@@ -38,10 +38,15 @@ require("lazy").setup({
 vim.keymap.set('n', '<Tab>', '<Cmd>bnext<CR>', { silent = true })
 vim.keymap.set('n', '<S-Tab>', '<Cmd>bprevious<CR>', { silent = true })
 vim.keymap.set('n', '<S-c>', '<Cmd>bd<CR>', { silent = true })
-
+vim.keymap.set("n", "<leader>gg", function() Snacks.lazygit() end, { desc = "Lazygit" })
+vim.keymap.set("n", "<leader>D", function() Snacks.dashboard() end, { desc = "Lazygit" })
+vim.keymap.set("n", "<leader>ef", function() Snacks.picker.files() end, { desc = "Lazygit" })
+vim.keymap.set('t', '<Esc>', [[<C-\><C-n>]], { noremap = true })
 require("theme.framework").setup()
 -- vim.opt.foldmethod = "expr"
 -- vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 vim.filetype.add({
   pattern = { [".*/hyprland%.conf"] = "hyprlang" },
 })
+
+
