@@ -1,6 +1,7 @@
 ------------------
 ---- KEYBINDS ----
 ------------------
+local closeWindowBind = hl.bind(mainMod .. " + C", hl.dsp.window.close())
 hl.bind(mainMod .. " + mouse_up", hl.dsp.exec_cmd("swayosd-client --output-volume -5"))
 hl.bind(mainMod .. " + mouse_down", hl.dsp.exec_cmd("swayosd-client --output-volume +5"))
 hl.bind(mainMod .. " + V", hl.dsp.exec_cmd("cliphist list | " .. sizedWofi .. " --dmenu  | cliphist decode | wl-copy"))
