@@ -16,31 +16,11 @@ hl.workspace_rule({
 	gaps_in = 0
 })
 hl.workspace_rule({
-	workspace = "r[4-6]",
-	default_name = "master"
-})
-hl.workspace_rule({
-	workspace = "r[7-9]",
-	default_name = "scrolling"
-})
-hl.workspace_rule({
 	workspace = "10",
 	default_name = "gaming",
-	layout = "monocle",
 	gaps_out = 0,
 	no_rounding = true,
 	decorate = false
-})
-hl.workspace_rule({
-	workspace = "name:master",
-	layout = "master"
-})
-hl.workspace_rule({
-	workspace = "name:scrolling",
-	layout = "scrolling",
-	gaps_out = 0,
-	gaps_in = 0,
-	no_rounding = true
 })
 hl.window_rule({
 	name = "smart-border",
@@ -73,7 +53,7 @@ hl.window_rule({
 })
 hl.window_rule({
 	name = "communication",
-	match = {class = "^(discord|org.telegram.desktop|elecwhat)$"},
+	match = {class = "^(discord|org.telegram.desktop|.*whatsie.*)$"},
 	size = {"(monitor_w*0.6)", "(monitor_h*0.6)"},
 	center = true,
 	float = true,

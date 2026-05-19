@@ -13,7 +13,8 @@ hl.layer_rule({
 	name="layer-slide-right",
 	match = {namespace = "^(swaync-control-center)$"},
 	animation = "slide right",
-	no_screen_share = false,
+	no_screen_share = true,
+	dim_around = true,
 })
 hl.layer_rule({
 	name="layer-slide-bottom",
