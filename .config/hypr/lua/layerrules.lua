@@ -22,3 +22,9 @@ hl.layer_rule({
 	animation = "popin 20%",
 	no_screen_share = false,
 })
+hl.layer_rule({
+	name="nosharebackground",
+	match = {namespace = "^(hyprpaper|mpvpaper)$"},
+	order = 100
+	--no_screen_share = true,
+})

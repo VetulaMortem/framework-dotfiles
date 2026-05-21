@@ -45,8 +45,21 @@ hl.config({
             passes    = 1,
             vibrancy  = 0.1696,
         },
+	glow = {
+		enabled = true,
+		range = 50,
+		color = "rgba(00000000)",
+		color_inactive = "rgba(BB2A39F0)",
+	}
     },
-
+    misc = {
+	--disable_hyprland_logo = true,
+        --background_color = "rgba(111111ff)",
+    },
+    render = {
+    	direct_scanout = 2,
+	new_render_scheduling = true,
+    },
     animations = {
         enabled = true,
     },

@@ -15,3 +15,4 @@ hl.on("hyprland.start",function()
    --hl.exec_cmd("whatsie")
    hl.exec_cmd("Telegram -startintray")
 end)
+

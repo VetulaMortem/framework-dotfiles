@@ -31,7 +31,7 @@ hl.window_rule({
 
 hl.window_rule( {
 	name = "no_looking",
-	match = { class = "^(.*(obs).*)$" },
+	match = { class = "^(.*(obs|discord).*)$" },
 	no_screen_share = true,
 })
 hl.window_rule({
@@ -152,4 +152,9 @@ hl.window_rule({
 	decorate = true,
 	border_color = "rgba(fe7446ff)",
 	border_size = 4,
+})
+hl.window_rule({
+	name = "incognimode",
+	no_screen_share = true,
+	match = { title = ".*Firefox Privater Modus.*"}
 })
