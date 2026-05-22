@@ -24,7 +24,7 @@ total=0
 specialparam=0
 #initialTitle: Steam Big Picture Mode  
    case $1 in
-   focusedmonv2*|changefloatingmode*|workspace*|activespecial*|openwindow*|closewindow*)
+   focusedmonv2*|*changefloatingmode*|workspace*|activespecial*|openwindow*|closewindow*)
    #*)
    activeworkspaceID=`hyprctl activeworkspace -j | jq -r '"\(.id)"'`
    activeMonitor=`hyprctl activeworkspace -j | jq '.monitorID'`

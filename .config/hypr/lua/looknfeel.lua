@@ -53,12 +53,12 @@ hl.config({
 	}
     },
     misc = {
-	--disable_hyprland_logo = true,
-        --background_color = "rgba(111111ff)",
+	disable_hyprland_logo = true,
+        background_color = "rgba(000000ff)",
     },
     render = {
-    	direct_scanout = 2,
-	new_render_scheduling = true,
+    	--direct_scanout = 2,
+	--new_render_scheduling = true,
     },
     animations = {
         enabled = true,

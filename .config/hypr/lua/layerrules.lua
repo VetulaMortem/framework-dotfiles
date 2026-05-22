@@ -5,9 +5,15 @@ hl.layer_rule({
 })
 hl.layer_rule({
 	name="layer-slide-top",
-	match = {namespace = "^(waybar|swaync-notification-window|swaync-control-center)$"},
+	match = {namespace = "^(swaync-notification-window|swaync-control-center)$"},
 	animation = "slide top",
 	no_screen_share = false,
+})
+hl.layer_rule({
+	name="layer-slide-top",
+	match = {namespace = "^(waybar)$"},
+	animation = "slide top",
+	no_screen_share = true,
 })
 hl.layer_rule({
 	name="layer-slide-right",
