@@ -8,7 +8,7 @@ hl.config { plugin = { dynamic_cursors = {
     -- rotate  - rotate the cursor based on movement direction
     -- stretch - stretch the cursor shape based on direction and velocity
     -- none    - do not change the cursor's behaviour
-    mode = "rotate",
+    mode = "tilt",
 
     -- minimum angle difference in degrees after which the shape is changed
     -- smaller values are smoother, but more expensive for hw cursors
@@ -136,6 +136,6 @@ hl.plugin.dynamic_cursors.shape_rule {
 hl.plugin.dynamic_cursors.shape_rule {
     -- name of the shape to apply to
     -- see below
-    shape = "pointer",
-    mode = "tilt"
+    shape = "default",
+    mode = "rotate"
 }

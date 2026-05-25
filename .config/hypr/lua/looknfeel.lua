@@ -46,7 +46,7 @@ hl.config({
             vibrancy  = 0.1696,
         },
 	glow = {
-		enabled = true,
+		enabled = false,
 		range = 50,
 		color = "rgba(00000000)",
 		color_inactive = "rgba(BB2A39F0)",

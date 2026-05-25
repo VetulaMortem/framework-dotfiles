@@ -2,6 +2,7 @@ hl.layer_rule({
 	name="wofi-rules",
 	match = { namespace = "wofi" },
 	animation = "slide bottom linear",
+	dim_around = true,
 })
 hl.layer_rule({
 	name="layer-slide-top",

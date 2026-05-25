@@ -77,6 +77,10 @@ hl.window_rule({
 	size = "450 250",
 	rounding = 0,
 	pin = true,
+	no_shadow = true,
+	decorate = false,
+	opacity = "0.8",
+	animation = "slide left",
 })
 hl.window_rule({
 	name = "WiFi",
