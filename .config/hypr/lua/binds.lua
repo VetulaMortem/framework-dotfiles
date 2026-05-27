@@ -2,6 +2,22 @@
 ---- KEYBINDS ----
 ------------------
 local closeWindowBind = hl.bind(mainMod .. " + C", hl.dsp.window.close())
+local function zoom(increment)
+	local zoom_level = hl.get_config("cursor.zoom_factor")
+	zoom_level = zoom_level + increment
+	if zoom_level < 1 then
+		zoom_level = 1.0
+	end
+	hl.exec_cmd("hyprctl eval 'hl.config({cursor = {zoom_factor = " .. zoom_level .. "}})'")
+end
+hl.bind(mainMod .. " + ALT +mouse_down",
+function()
+	zoom(0.1)
+end)
+hl.bind(mainMod .. " + ALT +mouse_up",
+function()
+	zoom(-0.1)
+end)
 hl.bind(mainMod .. " + mouse_up", hl.dsp.exec_cmd("swayosd-client --output-volume -5"))
 hl.bind(mainMod .. " + mouse_down", hl.dsp.exec_cmd("swayosd-client --output-volume +5"))
 hl.bind(mainMod .. " + V", hl.dsp.exec_cmd("cliphist list | " .. sizedWofi .. " --dmenu  | cliphist decode | wl-copy"))

@@ -16,3 +16,38 @@ hl.on("screenshare.state",function(active,type,display)
 	end
     end
 end)
+
+--local function toggleWaybar(windowNr)
+--	if windowNr < 1 then
+--		hl.exec_cmd("pidof waybar || waybar -c " .. home .."/.config/waybar/config-eDP-1")
+--	elseif windowNr > 1 then
+--		hl.exec_cmd("pidof waybar || waybar -c " .. home .."/.config/waybar/config-eDP-1")
+--	else
+--		hl.exec_cmd("killall waybar")
+--	end
+--end
+--
+--hl.on("window.close",function()
+--	toggleWaybar(hl.get_active_workspace().windows)
+--end)
+--hl.on("window.open",function()
+--	toggleWaybar(hl.get_active_workspace().windows)
+--end)
+--hl.on("window.open_early",function()
+--	toggleWaybar(hl.get_active_workspace().windows)
+--end)
+--hl.on("window.destroy",function()
+--	toggleWaybar(hl.get_active_workspace().windows)
+--end)
+--hl.on("window.kill",function()
+--	toggleWaybar(hl.get_active_workspace().windows)
+--end)
+--hl.on("window.active",function()
+--	toggleWaybar(hl.get_active_workspace().windows)
+--end)
+--hl.on("window.update_rules",function()
+--	toggleWaybar(hl.get_active_workspace().windows)
+--end)
+--hl.on("window.fullscreen",function()
+--	toggleWaybar(hl.get_active_workspace().windows)
+--end)
