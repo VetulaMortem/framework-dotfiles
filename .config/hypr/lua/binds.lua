@@ -23,8 +23,6 @@ hl.bind(mainMod .. " + mouse_down", hl.dsp.exec_cmd("swayosd-client --output-vol
 hl.bind(mainMod .. " + V", hl.dsp.exec_cmd("cliphist list | " .. sizedWofi .. " --dmenu  | cliphist decode | wl-copy"))
 --hl.bind( mainMod .. " + , Space, global, kando:hypr
 hl.bind("CTRL + SHIFT + Q" , hl.dsp.exec_cmd(home .. ".scripts/commandwrapper.sh " .. terminal .. "\" -o background_opacity=1.0 --class btop -e btop\"")) 
-hl.bind(mainMod .. " + ALT + mouse_up", hl.dsp.exec_cmd(home .. ".scripts/magnifier.sh - 0.1"))
-hl.bind(mainMod .. " + ALT + mouse_down" , hl.dsp.exec_cmd(home .. ".scripts/magnifier.sh + 0. hyprctl keyword cursor:zoom_factor 2.01"))
 hl.bind(mainMod .. " + Q", hl.dsp.exec_cmd(terminal))
 hl.bind(mainMod .. " + N", hl.dsp.exec_cmd("swaync-client -t -sw"))
 hl.bind(mainMod .. " + ALT + 1" , hl.dsp.exec_cmd("hyprctl eval 'hl.config({cursor = {zoom_factor = 1.0}})'"))
