@@ -20,7 +20,9 @@ hl.workspace_rule({
 	default_name = "gaming",
 	gaps_out = 0,
 	no_rounding = true,
-	decorate = false
+	decorate = false,
+	layout = "monocle",
+	on_created_empty = "steam",
 })
 hl.window_rule({
 	name = "smart-border",
@@ -28,6 +30,7 @@ hl.window_rule({
 	border_size = 0,
 	rounding = 0,
 })
+
 
 hl.window_rule( {
 	name = "no_looking",
@@ -162,3 +165,12 @@ hl.window_rule({
 	no_screen_share = true,
 	match = { title = ".*Firefox Privater Modus.*"}
 })
+hl.window_rule({
+	name = "gaming",
+	match = { workspace = "name:gaming" },
+	border_size = 0,
+	rounding = 0,
+	--float = false,
+})
+
+

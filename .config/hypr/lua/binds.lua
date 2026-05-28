@@ -31,6 +31,7 @@ hl.bind("CTRL + TAB + 1" , hl.dsp.exec_cmd("hyprctl eval 'hl.config({general = {
 hl.bind("CTRL + TAB + 2" , hl.dsp.exec_cmd("hyprctl eval 'hl.config({general = {layout = \"master\",}})'"))
 hl.bind("CTRL + TAB + 3" , hl.dsp.exec_cmd("hyprctl eval 'hl.config({general = {layout = \"scrolling\",}})'"))
 hl.bind("CTRL + TAB + 4" , hl.dsp.exec_cmd("hyprctl eval 'hl.config({general = {layout = \"monocle\",}})'"))
+hl.bind("CTRL + TAB + 5" , hl.dsp.exec_cmd("hyprctl reload"))
 hl.bind(mainMod .. " + M", hl.dsp.exec_cmd(home .. ".scripts/logouthyprland.sh"), { locked = true })
 hl.bind(mainMod .. " + SHIFT + M", hl.dsp.exit)
 hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(fileManager))
