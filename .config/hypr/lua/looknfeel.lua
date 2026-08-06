@@ -53,6 +53,7 @@ hl.config({
 	}
     },
     misc = {
+	vrr = 2,
 	disable_hyprland_logo = true,
         background_color = "rgba(000000ff)",
     },

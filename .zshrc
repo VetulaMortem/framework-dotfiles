@@ -126,3 +126,8 @@ toggle_home_git() {
 }
 alias archangel-ssh='ssh vetula@192.168.50.193'
 alias archangel-sftp='sftp vetula@192.168.50.193'
+
+. "$HOME/.local/share/../bin/env"
+
+# Hermes Agent — ensure ~/.local/bin is on PATH
+export PATH="$HOME/.local/bin:$PATH"

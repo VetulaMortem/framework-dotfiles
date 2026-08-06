@@ -10,7 +10,7 @@ hl.workspace_rule({
 })
 hl.workspace_rule({
 	workspace = "special:magic", 
-	on_created_empty = "kitty",
+	on_created_empty = "kitty -- btop",
 	layout = "monocle",
 	gaps_out = 0,
 	gaps_in = 0

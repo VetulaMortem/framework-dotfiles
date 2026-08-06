@@ -25,8 +25,8 @@ hl.layer_rule({
 })
 hl.layer_rule({
 	name="layer-slide-bottom",
-	match = {namespace = "^(swayosd)$"},
-	animation = "popin 20%",
+	match = {namespace = "^(wob)$"},
+	animation = "slide bottom linear",
 	no_screen_share = false,
 })
 hl.layer_rule({

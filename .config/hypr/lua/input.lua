@@ -18,3 +18,13 @@ hl.config({
 		},
 	},
 })
+hl.device({
+	name = "pixa3854:00-093a:0274-touchpad",
+	enabled = true,
+})
+hl.device({
+	name = "csw1322:00-3558:14fd",
+	enabled = true,
+	transform = 0,
+})
+

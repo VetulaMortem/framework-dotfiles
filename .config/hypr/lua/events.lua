@@ -1,7 +1,13 @@
 ----------------
 ---- EVENTS ----
 ----------------
-
+hl.on("keybinds.submap",function(name)
+	if name == "" then
+		hl.notification.create({ text = "Submap: reset",timeout = 2000,icon = "ok"})
+	else
+		hl.notification.create({ text = "Submap: " .. name .. " activated",timeout = 2000,icon = "ok"})
+	end
+end)
 hl.on("screenshare.state",function(active,type,display)
      currentWindows = hl.get_active_workspace().windows
      if active then
