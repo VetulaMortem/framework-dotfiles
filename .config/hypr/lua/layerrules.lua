@@ -35,3 +35,9 @@ hl.layer_rule({
 	order = 100
 	--no_screen_share = true,
 })
+hl.layer_rule({
+	name="muteoverlay",
+	match = {namespace = "^(mute_overlay)$"},
+	animation = "slide bottom linear"
+})
+

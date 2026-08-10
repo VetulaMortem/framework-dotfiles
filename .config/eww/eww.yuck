@@ -1,0 +1,21 @@
+;; Fragt PipeWire alle 200ms nach dem Mute-Status ab
+(defpoll is_muted :interval "200ms"
+  		  :initial "false"
+  `wpctl get-volume @DEFAULT_AUDIO_SINK@ | grep -q "MUTED" && echo true || echo false`)
+
+(defwindow mute_overlay
+  :monitor 0
+  :namespace "mute_overlay"
+  :focusable false
+  :geometry (geometry :x "4px"
+                      :y "4px"
+                      :anchor "bottom left")
+  :stacking "overlay"
+  :exclusive false
+  (box :class "mute-container"
+       :halign "center"
+       :valign "center"
+       :width "48px"
+       :height "48px"
+       :visible is_muted
+    (label :text "󰝟" :class "mute-icon")))
