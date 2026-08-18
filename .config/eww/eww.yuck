@@ -7,37 +7,34 @@
   		  :initial "false"
   `cat /sys/class/leds/*capslock/brightness |  grep -q "1" && echo true || echo false`)
 
-(defwindow mute_overlay
+(defwindow boxbox
   :monitor 0
-  :namespace "mute_overlay"
+  :namespace "capslock_overlay"
   :focusable false
   :geometry (geometry :x "4px"
                       :y "4px"
                       :anchor "bottom left")
   :stacking "overlay"
   :exclusive false
+  (box :orientation "vertical"
+       :spacing 10
+	  (box :class "mute-container"
+	       :halign "center"
+	       :valign "center"
+	       :width "48px"
+	       :height "48px"
+       :visible caps_locked
+	    (label :text "󰘲" :class "mute-icon"))
+
   (box :class "mute-container"
        :halign "center"
        :valign "center"
        :width "48px"
        :height "48px"
        :visible is_muted
-    (label :text "󰝟" :class "mute-icon")))
-
-
-(defwindow capslock_overlay
-  :monitor 0
-  :namespace "capslock_overlay"
-  :focusable false
-  :geometry (geometry :x "4px"
-                      :y "60px"
-                      :anchor "bottom left")
-  :stacking "overlay"
-  :exclusive false
-  (box :class "mute-container"
-       :halign "center"
-       :valign "center"
-       :width "48px"
-       :height "48px"
-       :visible caps_locked
-    (label :text "󰘲" :class "mute-icon")))
+    (button :onclick "wpctl set-mute @DEFAULT_SINK@ 0"
+	(label :text "󰝟" :class "mute-icon")
+    )
+  )
+  )
+)
