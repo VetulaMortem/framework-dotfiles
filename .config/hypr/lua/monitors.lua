@@ -13,3 +13,9 @@ hl.monitor({
     position = "auto",
     scale    = "2",
 })
+hl.monitor({
+    output   = "desc:CVT VITURE 0x88888800",
+    mode     = "preferred",
+    position = "auto",
+    scale    = "2",
+})

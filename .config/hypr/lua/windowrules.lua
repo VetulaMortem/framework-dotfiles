@@ -137,6 +137,7 @@ hl.window_rule({
 	match = {class = "^(steam_app.*)$"},
 	float = true,
 	stay_focused = true,
+	render_unfocused = true,
 	rounding = 0,
 })
 hl.window_rule({
