@@ -54,7 +54,7 @@ PanelWindow {
             onRead: data => {
                 let str = data.trim()
                 if (str.length === 0) return
-                
+
                 let muted = str.includes("[MUTED]")
                 let match = str.match(/Volume:\s+([0-9.]+)/)
                 let vol = match ? Math.round(parseFloat(match[1]) * 100) : 0
@@ -81,13 +81,13 @@ PanelWindow {
         opacity: 0.0
 
         Behavior on opacity {
-            NumberAnimation { 
-                duration: 200 
-                easing.type: Easing.OutCubic 
+            NumberAnimation {
+                duration: 200
+                easing.type: Easing.OutCubic
             }
         }
 
-        // Sobald die Animation das Fenster vollständig ausgeblendet hat, 
+        // Sobald die Animation das Fenster vollständig ausgeblendet hat,
         // wird visible auf false gesetzt, um Mausklicks nicht zu blockieren.
         onOpacityChanged: {
             if (opacity === 0.0) {
