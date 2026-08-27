@@ -12,7 +12,7 @@ hl.layer_rule({
 })
 hl.layer_rule({
 	name="layer-slide-top",
-	match = {namespace = "^(waybar)$"},
+	match = {namespace = "^(waybar|quickshell)$"},
 	animation = "slide top",
 	no_screen_share = true,
 })
