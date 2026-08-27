@@ -12,7 +12,7 @@ hl.layer_rule({
 })
 hl.layer_rule({
 	name="layer-slide-top",
-	match = {namespace = "^(waybar|quickshell)$"},
+	match = {namespace = "^(waybar|quickshell-bar)$"},
 	animation = "slide top",
 	no_screen_share = true,
 })
@@ -25,7 +25,7 @@ hl.layer_rule({
 })
 hl.layer_rule({
 	name="layer-slide-bottom",
-	match = {namespace = "^(wob)$"},
+	match = {namespace = "^(wob|quickshell-osd)$"},
 	animation = "slide bottom linear",
 	no_screen_share = false,
 })
