@@ -32,5 +32,5 @@ hl.plugin.hyprgrass.gesture {
 }
 hl.plugin.hyprgrass.gesture {
     pattern = {kind = "swipe", fingers = 4, direction = "up"},
-    action = function (e) hl.exec_cmd("pkill wvkbd || wvkbd-mobintl -L 300") end,
+    action = function (e) hl.exec_cmd("pkill wvkbd || wvkbd-deskintl -L 300") end,
 }
