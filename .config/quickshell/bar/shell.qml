@@ -8,21 +8,14 @@ import Quickshell.Hyprland
 import Quickshell.Io
 import Quickshell.Widgets
 import Quickshell.Services.SystemTray
-import Quickshell.Services.Pipewire
 import Quickshell.Services.UPower
-
 
 PanelWindow {
     id: root
 
+    // Ausblenden, wenn exakt 1 Fenster im Workspace aktiv ist
+    visible: Hyprland.focusedWorkspace ? Hyprland.focusedWorkspace.toplevels.values.length !== 1 : true
 
-    visible: {
-	if (Hyprland.focusedWorkspace.toplevels.values.length != 1){
-	     	
-	     return true
-	}
-	return false
-    }
     anchors {
         top: true
         left: true
@@ -34,63 +27,75 @@ PanelWindow {
 
     WlrLayershell.layer: WlrLayer.Top
     WlrLayershell.exclusiveZone: 38
+    WlrLayershell.namespace: "quickshell-bar"
+
+    // Baustein: Basis-Text für Icons & Standard-Font
+    component BaseText : Text {
+        font.family: "JetBrainsMono NF"
+        font.pixelSize: 16
+        color: "#ffffff"
+    }
 
     // Gemeinsame Style-Eigenschaften für alle Inseln
     component Island : Rectangle {
-        color: "#BB2A39"       // Dunkler, warmes Rot/Braun-Ton
-        border.color: "#31342B" // Roter Rahmen
+        color: "#BB2A39"
+        border.color: "#31342B"
         border.width: 4
-	bottomLeftRadius: 32
-	bottomRightRadius: 32
-	topLeftRadius: 0
-	topRightRadius: 0
+        bottomLeftRadius: 32
+        bottomRightRadius: 32
+        topLeftRadius: 0
+        topRightRadius: 0
         height: 41
 
-        // Abstand vom oberen Bildschirmrand
         anchors.top: parent.top
         anchors.topMargin: -4
     }
 
+    // Singletons für globale Shell-Execs
+    Process { id: termExec }
+    Process { id: bluetoothExec }
+    Process { id: pavucontrolExec; command: ["pavucontrol"] }
+    Process { id: swayncExec }
+    Process { id: powerProfileSetExec }
 
+    // Helper-Timer, um dem System nach dem Umschalten Zeit zu geben, das Profil zu aktualisieren
+    Timer {
+        id: powerProfileRefreshDelay
+        interval: 150
+        repeat: false
+        onTriggered: powerProfileProc.running = true
+    }
+
+    // ------------------------------------------------------
     // 1. LINKE INSEL (Workspaces)
+    // ------------------------------------------------------
     Island {
         id: leftIsland
         anchors.left: parent.left
-        anchors.leftMargin: 0
-	width: workspaceRow.implicitWidth + 40
+        width: workspaceRow.implicitWidth + 40
 
         Row {
             id: workspaceRow
             anchors.centerIn: parent
-            anchors.verticalCenterOffset: 0 // Gleicht den abgeschnittenen oberen Rand aus
             spacing: 8
 
-            // Geht durch die Workspaces 1 bis 10 (oder deine gewünschte Anzahl)
             Repeater {
                 model: 10
 
                 Rectangle {
                     required property int index
                     property int wsId: index + 1
-                    // Prüft, ob dieser Workspace der aktuell aktive ist
                     property bool isActive: Hyprland.focusedWorkspace ? Hyprland.focusedWorkspace.id === wsId : false
-		    // Prüft, ob auf dem Workspace Fenster liegen
-                    property bool isOccupied: {
-			for (var i = 0;i < Hyprland.workspaces.values.length;i++){
-				if(Hyprland.workspaces.values[i].id === wsId){
-					return Hyprland.workspaces.values[i].toplevels.values.length > 0 ? true : false
-				}
-		        }
-		    }
-                    // Dynamische Form: Aktiver Workspace wird eine längere "Pille", inaktive bleiben runde Dots
+                    
+                    // Belegungsprüfung
+                    property bool isOccupied: Hyprland.workspaces.values.some(ws => ws.id === wsId && ws.toplevels.values.length > 0)
+
                     width: isActive ? 32 : 12
                     height: 12
                     radius: 8
 
-                    // Farbanpassung: Aktiv = Hellrot, Belegt = Weiß/Rosa, Leer = Dunkler Dot
                     color: isActive ? "#FE7446" : (isOccupied ? "#5CBD88" : "#282828")
 
-                    // Animation für den Wechsel der Breite (Pill-Effekt)
                     Behavior on width {
                         NumberAnimation { duration: 150; easing.type: Easing.InOutQuad }
                     }
@@ -98,7 +103,6 @@ PanelWindow {
                         ColorAnimation { duration: 150 }
                     }
 
-                    // Klick-Event zum Wechseln des Workspaces
                     MouseArea {
                         anchors.fill: parent
                         cursorShape: Qt.PointingHandCursor
@@ -109,19 +113,18 @@ PanelWindow {
         }
     }
 
-    // 2. MITTLERE INSEL (Uhrzeit)
+    // ------------------------------------------------------
+    // 2. MITTLERE INSEL (Uhrzeit & Benachrichtigungen)
+    // ------------------------------------------------------
     Island {
         id: centerIsland
         anchors.horizontalCenter: parent.horizontalCenter
-	width: clockRow.implicitWidth + 28
+        width: clockRow.implicitWidth + 28
 
-	// Status-Variablen für SwayNC
         property bool dndActive: false
-	property int count: 0
+        property int count: 0
 
-	// Prozess zum Abfragen des Status (JSON-Format von swaync-client)
-
-	Process {
+        Process {
             id: swayncStatus
             command: ["swaync-client", "-s"]
             running: true
@@ -133,7 +136,6 @@ PanelWindow {
                     if (cleaned.length > 0) {
                         try {
                             let json = JSON.parse(cleaned)
-                            // "dnd" ist ein Boolean, "count" liefert die Anzahl der ungelesenen Notifications
                             centerIsland.dndActive = json.dnd ?? false
                             centerIsland.count = json.count ?? 0
                         } catch(e) {}
@@ -141,221 +143,161 @@ PanelWindow {
                 }
             }
         }
-	Process {
-	    id: swayncExec
-    	}
-	Process {
-	    id: bluetooth
-    }
-    // Funktion zum Aktualisieren des Status
+
         function updateSwayNc() {
             swayncStatus.running = true
         }
-        // SystemClock liefert die aktuelle Zeit
+
         SystemClock {
             id: clock
-            precision: SystemClock.Minutes // Reicht völlig für "HH:mm"
+            precision: SystemClock.Minutes
         }
-	Row {
-		    id: clockRow
-		    anchors.centerIn: parent
-		    anchors.verticalCenterOffset: 0
-		    spacing: 8
 
-		    // Uhrzeit & Datum
-		    Text {
-			font.family: "JetBrainsMono NF"
-			font.pixelSize: 16
-			font.bold: true
-			color: "#ffffff"
-			text: Qt.formatDateTime(clock.date, "MMM dd  HH:mm")
-		    }
+        Row {
+            id: clockRow
+            anchors.centerIn: parent
+            spacing: 8
 
-		    // Glocken-Icon für SwayNC
-		    Text {
-			font.family: "JetBrainsMono NF"
-			font.pixelSize: 16
-			
-			// Farbe: Rot bei ungelesenen Nachrichten, ausgegraut bei DND, sonst Weiß>>
-			color: centerIsland.count > 0 ? "#ff5545" : (centerIsland.dndActive ? "#888888" : "#ffffff")
-			
-			// Icon-Wechsel je nach Status:
-			// 󰂛 = DND / Stumm
-			// 󱅫 = Neue Benachrichtigungen
-			// 󰂚 = Normal
-			text: centerIsland.dndActive ? "󰂛" : (centerIsland.count > 0 ? "󱅫" : "󰂚")
-
-
-			// Klick-Logik für SwayNC
-			MouseArea {
-			    anchors.fill: parent
-			    cursorShape: Qt.PointingHandCursor
-			    acceptedButtons: Qt.LeftButton | Qt.RightButton
-
-			    onClicked: (mouse) => {
-				if (mouse.button === Qt.LeftButton) {
-				    // Linksklick: Notification Center öffnen/schließen
-				    swayncExec.command = ["swaync-client", "-t", "-sw"]
-				} else if (mouse.button === Qt.RightButton) {
-				    // Rechtsklick: Do Not Disturb umschalten
-				    swayncExec.command = ["swaync-client", "-d", "-sw"]
-			    	}
-				swayncExec.running = true
-                        
-                        // Status kurz nach dem Klick neu abfragen
-                        centerIsland.updateSwayNc()
-
-			    }
-			}
-		    }
-		}
-	    }
-
-    // 3. RECHTE INSEL (System-Tray)
-    Island {
-        id: rightIsland
-        anchors.right: parent.right
-        anchors.rightMargin: 0
-        width: trayRow.implicitWidth + 32
-
-// 1. PACMAN UPDATES PROZESS
-    Process {
-        id: updateProc
-        // Prüft ausstehende Updates (checkupdates ist Teil von pacman-contrib)
-        command: ["bash", "-c", "checkupdates 2>/dev/null | wc -l"]
-        running: true
-
-        property int updateCount: 0
-
-        stdout: SplitParser {
-            onRead: data => {
-                let count = parseInt(data.trim()) || 0
-                updateProc.updateCount = count
+            BaseText {
+                font.bold: true
+                text: Qt.formatDateTime(clock.date, "MMM dd  HH:mm")
             }
-        }
-    }
 
-    // Timer: Alle 30 Minuten Updates prüfen
-    Timer {
-        interval: 18000
-        running: true
-        repeat: true
-        onTriggered: updateProc.running = true
-    }
+            BaseText {
+                color: centerIsland.count > 0 ? "#ff5545" : (centerIsland.dndActive ? "#888888" : "#ffffff")
+                text: centerIsland.dndActive ? "󰂛" : (centerIsland.count > 0 ? "󱅫" : "󰂚")
 
-    // 2. POWER PROFILE PROZESS
-    Process {
-        id: powerProfileProc
-        command: ["powerprofilesctl", "get"]
-        running: true
+                MouseArea {
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+                    acceptedButtons: Qt.LeftButton | Qt.RightButton
 
-        property string currentProfile: "balanced"
-
-        stdout: SplitParser {
-            onRead: data => {
-                let profile = data.trim()
-                if (profile.length > 0) {
-                    powerProfileProc.currentProfile = profile
-                }
-            }
-        }
-    }
-    Timer {
-        interval: 100
-        running: true
-        repeat: true
-        onTriggered: powerProfileProc.running = true
-    }
-
-    Process {
-        id: powerProfileSetExec
-    }
-
-
-// Lautstärke Anzeige & Pavucontrol Launcher
-            Process {
-                id: volumeProc
-                // Fragt die Lautstärke von WirePlumber ab
-                command: ["wpctl", "get-volume", "@DEFAULT_AUDIO_SINK@"]
-                running: true
-
-                property int volumePercent: 0
-                property bool isMuted: false
-
-                stdout: SplitParser {
-                    onRead: data => {
-                        let str = data.trim()
-                        volumeProc.isMuted = str.includes("[MUTED]")
-                        let match = str.match(/Volume:\s+([0-9.]+)/)
-                        if (match) {
-                            volumeProc.volumePercent = Math.round(parseFloat(match[1]) * 100)
+                    onClicked: (mouse) => {
+                        if (mouse.button === Qt.LeftButton) {
+                            swayncExec.command = ["swaync-client", "-t", "-sw"]
+                        } else if (mouse.button === Qt.RightButton) {
+                            swayncExec.command = ["swaync-client", "-d", "-sw"]
                         }
+                        swayncExec.running = true
+                        centerIsland.updateSwayNc()
                     }
                 }
             }
+        }
+    }
 
-// Timer: Fragt die Lautstärke jede Sekunde neu ab
-            Timer {
-                interval: 100
-                running: true
-                repeat: true
-                onTriggered: {
-                    volumeProc.running = true
+    // ------------------------------------------------------
+    // 3. RECHTE INSEL (System Status & Tray)
+    // ------------------------------------------------------
+    Island {
+        id: rightIsland
+        anchors.right: parent.right
+        width: trayRow.implicitWidth + 32
+
+        // Pacman Updates
+        Process {
+            id: updateProc
+            command: ["bash", "-c", "checkupdates 2>/dev/null | wc -l"]
+            running: true
+            property int updateCount: 0
+
+            stdout: SplitParser {
+                onRead: data => {
+                    updateProc.updateCount = parseInt(data.trim()) || 0
                 }
             }
+        }
 
-            // Prozess zum Starten von Pavucontrol
-            Process {
-                id: pavucontrolExec
-                command: ["pavucontrol"]
+        Timer {
+            interval: 1800000 // 30 Minuten
+            running: true
+            repeat: true
+            onTriggered: updateProc.running = true
+        }
+
+        // Power Profile
+        Process {
+            id: powerProfileProc
+            command: ["powerprofilesctl", "get"]
+            running: true
+            property string currentProfile: "balanced"
+
+            stdout: SplitParser {
+                onRead: data => {
+                    let profile = data.trim()
+                    if (profile.length > 0) powerProfileProc.currentProfile = profile
+                }
             }
-	
+        }
 
+        Timer {
+            interval: 30000
+            running: true
+            repeat: true
+            onTriggered: powerProfileProc.running = true
+        }
+
+        // Lautstärke: Realtime Event-Listener via pw-mon / wpctl
+        Process {
+            id: volumeProc
+            // Horcht dauerhaft auf System-Audio-Events und liest bei jeder Änderung wpctl aus
+            command: ["bash", "-c", "wpctl get-volume @DEFAULT_AUDIO_SINK@; pw-mon | stdbuf -oL grep --line-buffered 'sink' | while read -r line; do wpctl get-volume @DEFAULT_AUDIO_SINK@; done"]
+            running: true
+
+            property int volumePercent: 0
+            property bool isMuted: false
+
+            stdout: SplitParser {
+                splitMarker: "\n"
+                onRead: data => {
+                    let str = data.trim()
+                    if (str.length === 0) return
+                    volumeProc.isMuted = str.includes("[MUTED]")
+                    let match = str.match(/Volume:\s+([0-9.]+)/)
+                    if (match) {
+                        volumeProc.volumePercent = Math.round(parseFloat(match[1]) * 100)
+                    }
+                }
+            }
+        }
 
         Row {
             id: trayRow
             anchors.centerIn: parent
-            anchors.verticalCenterOffset: 0
             spacing: 10
 
-		
-	    Row {
+            // Pacman Updates
+            Row {
                 spacing: 4
-                visible: updateProc.updateCount > 0 // Nur sichtbar wenn Updates da sind
+                visible: updateProc.updateCount > 0
 
-                Text {
-                    font.family: "JetBrainsMono NF"
-                    font.pixelSize: 16
-                    color: "#5CBD88" // Sanftes Gelb/Orange für Updates
+                BaseText {
+                    color: "#5CBD88"
                     text: "󰏔"
-                MouseArea {
-			anchors.fill: parent
-			cursorShape: Qt.PointingHandCursor
-                    Process { id: termExec }
-                    onClicked: {
-                        // Öffnet dein Terminal für den Update-Befehl
-                        termExec.command = ["kitty","--class","update","-o","background_opacity=1.0","-e","/home/vetula/.config/hypr/scripts/update_system.sh"]
-                        termExec.running = true
+
+                    MouseArea {
+                        anchors.fill: parent
+                        cursorShape: Qt.PointingHandCursor
+                        onClicked: {
+                            termExec.command = ["kitty", "--class", "update", "-o", "background_opacity=1.0", "-e", "/home/vetula/.config/hypr/scripts/update_system.sh"]
+                            termExec.running = true
+                        }
                     }
                 }
-                }
 
-                Text {
-                    font.family: "JetBrainsMono NF"
-                    font.pixelSize: 16
+                BaseText {
                     font.bold: true
-                    color: "#ffffff"
                     text: updateProc.updateCount.toString()
                 }
-
             }
 
-
+            // System Tray Items
             Repeater {
                 model: SystemTray.items
+
                 IconImage {
                     id: iconImg
-		    required property SystemTrayItem modelData
+                    required property SystemTrayItem modelData
 
                     source: modelData.icon
                     implicitWidth: 20
@@ -368,123 +310,94 @@ PanelWindow {
 
                         onClicked: (mouse) => {
                             if (mouse.button === Qt.LeftButton) {
-                                // Linksklick: Primäre Aktion ausführen
                                 modelData.activate()
                             } else if (mouse.button === Qt.RightButton) {
-                                // Rechtsklick: Menü öffnen falls vorhanden, sonst Sekundäraktion
-				if (modelData.hasMenu) {
-				    let globalPos = iconImg.mapToItem(null, 0, 0)
-
+                                if (modelData.hasMenu) {
+                                    let globalPos = iconImg.mapToItem(null, 0, 0)
                                     modelData.display(root, globalPos.x, root.height)
                                 } else {
                                     modelData.secondaryActivate()
                                 }
                             } else if (mouse.button === Qt.MiddleButton) {
-                                // Tertiäraktion (falls vom Applet unterstützt)
                                 modelData.secondaryActivate()
                             }
                         }
                     }
                 }
-	    }
-		Row {
-			spacing: 4
-			Text {
+            }
 
-                        font.family: "JetBrainsMono NF"
-                        font.pixelSize: 16
+            // Bluetooth
+            Row {
+                spacing: 4
+                BaseText {
                     font.bold: true
                     color: "#6167AD"
                     text: ""
 
-                MouseArea {
-                    anchors.fill: parent
-                    cursorShape: Qt.PointingHandCursor
-
-                    onClicked: {
-                        bluetooth.command = ["blueberry"]
-                        bluetooth.running = true
-                    }
-                }
-			}
-		}	
-	// Akku-Anzeige via UPower
-                Row {
-                    spacing: 4
-                    // UPower.displayDevice liefert den Hauptakku des Systems
-                    visible: UPower.displayDevice !== null && UPower.displayDevice.isPresent
-
-                    property var device: UPower.displayDevice
-
-                    // Icon basierend auf Status & Prozent
-                    Text {
-                        font.family: "JetBrainsMono NF"
-                        font.pixelSize: 16
-                        
-                        // Grün beim Laden, Rot unter 20%, sonst Weiß
-                        color: parent.device.state === UPowerDeviceState.Charging ? "#a6e3a1" : 
-                               (parent.device.percentage <= 0.2 ? "#ff5545" : "#ffffff")
-
-                        text: {
-                            if (parent.device.state === UPowerDeviceState.Charging) return "󰂄"
-                            let p = parent.device.percentage
-                            if (p > 0.9) return "󰁹"
-                            if (p > 0.7) return "󰂀"
-                            if (p > 0.5) return "󰁾"
-                            if (p > 0.3) return "󰁼"
-                            if (p > 0.1) return "󰁺"
-                            return "󰂎"
+                    MouseArea {
+                        anchors.fill: parent
+                        cursorShape: Qt.PointingHandCursor
+                        onClicked: {
+                            bluetoothExec.command = ["blueberry"]
+                            bluetoothExec.running = true
                         }
                     }
-
-                    // Prozent-Text
-                    Text {
-                        font.family: "JetBrainsMono NF"
-                        font.pixelSize: 16
-                        font.bold: true
-                        color: "#ffffff"
-                        text: Math.round(parent.device.percentage * 100) + "%"
-                    }
-	    }
-
-	    // Icon + Prozent Text
-            Row {
-                spacing: 4
-
-                Text {
-                    font.family: "JetBrainsMono NF"
-                    font.pixelSize: 16
-                    color: volumeProc.isMuted ? "#ff5545" : "#ffffff"
-                    text: volumeProc.isMuted ? "󰝟" : (volumeProc.volumePercent > 50 ? "󰕾" : "󰖀")
-
-
-
-		    MouseArea {
-			    anchors.fill: parent
-                    cursorShape: Qt.PointingHandCursor
-
-                    onClicked: {
-                        // Öffnet Pavucontrol bei Klick
-                        pavucontrolExec.running = true
-                    }
-                }
-
-	    	}
-
-                Text {
-                    font.family: "JetBrainsMono NF"
-                    font.pixelSize: 16
-                    font.bold: true
-		    color: (volumeProc.volumePercent > 100 ? "#000000" : "#ffffff")
-		    text: volumeProc.volumePercent + "%"
                 }
             }
 
-	Text {
-                font.family: "JetBrainsMono NF"
-                font.pixelSize: 16
-                
-                // Icon & Farbe je nach Profil
+            // Akku (UPower)
+            Row {
+                spacing: 4
+                visible: UPower.displayDevice !== null && UPower.displayDevice.isPresent
+                property var device: UPower.displayDevice
+
+                BaseText {
+                    color: parent.device && parent.device.state === UPowerDeviceState.Charging ? "#a6e3a1" : 
+                           (parent.device && parent.device.percentage <= 0.2 ? "#ff5545" : "#ffffff")
+
+                    text: {
+                        if (!parent.device) return ""
+                        if (parent.device.state === UPowerDeviceState.Charging) return "󰂄"
+                        let p = parent.device.percentage
+                        if (p > 0.9) return "󰁹"
+                        if (p > 0.7) return "󰂀"
+                        if (p > 0.5) return "󰁾"
+                        if (p > 0.3) return "󰁼"
+                        if (p > 0.1) return "󰁺"
+                        return "󰂎"
+                    }
+                }
+
+                BaseText {
+                    font.bold: true
+                    text: parent.device ? Math.round(parent.device.percentage * 100) + "%" : ""
+                }
+            }
+
+            // Lautstärke Anzeige
+            Row {
+                spacing: 4
+
+                BaseText {
+                    color: volumeProc.isMuted ? "#ff5545" : "#ffffff"
+                    text: volumeProc.isMuted ? "󰝟" : (volumeProc.volumePercent > 50 ? "󰕾" : "󰖀")
+
+                    MouseArea {
+                        anchors.fill: parent
+                        cursorShape: Qt.PointingHandCursor
+                        onClicked: pavucontrolExec.running = true
+                    }
+                }
+
+                BaseText {
+                    font.bold: true
+                    color: volumeProc.volumePercent > 100 ? "#ff5545" : "#ffffff"
+                    text: volumeProc.volumePercent + "%"
+                }
+            }
+
+            // Power Profile Toggle
+            BaseText {
                 color: {
                     switch (powerProfileProc.currentProfile) {
                         case "performance": return "#6167AD"
@@ -511,18 +424,16 @@ PanelWindow {
                             nextProfile = "performance"
                         } else if (powerProfileProc.currentProfile === "performance") {
                             nextProfile = "power-saver"
-                        } else {
-                            nextProfile = "balanced"
                         }
 
-                        // Profil umschalten & Status neu laden
                         powerProfileSetExec.command = ["powerprofilesctl", "set", nextProfile]
                         powerProfileSetExec.running = true
-                        powerProfileProc.running = true
+                        
+                        // Startet den Timer für das verzögerte Icon-Update
+                        powerProfileRefreshDelay.start()
                     }
                 }
             }
-
         }
     }
 }
