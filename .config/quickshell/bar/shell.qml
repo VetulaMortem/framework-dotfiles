@@ -12,7 +12,6 @@ import Quickshell.Services.UPower
 
 PanelWindow {
     id: root
-    
 Process {
         id: floatingcounter
         // Nutzt die ID des aktiven Workspaces
@@ -28,9 +27,22 @@ Process {
         }
     }
 
+    Connections {
+        target: Hyprland
+
+        function onRawEvent(event) {
+            // event.name contains the event type (e.g., "workspace", "activewindow")
+            // event.data contains the event context/arguments
+            print("Hyprland event: " + event.name + " -> " + event.data);
+            if (event.name === "workspace" || event.name === "activewindow" || event.name === "changefloatingmode") {
+	    floatingcounter.running = true
+
+	    }
+        }
+    }
     // Timer als Fallback, falls Fenster geschlossen/geöffnet werden ohne Workspace-Wechsel
     Timer {
-        interval: 100
+        interval: 10000
         running: true
         repeat: true
         onTriggered: floatingcounter.running = true
@@ -38,9 +50,8 @@ Process {
 
     // Ausblenden, wenn exakt 1 Fenster im Workspace aktiv ist
 visible: {
-        let totalWindows = Hyprland.focusedWorkspace.toplevels.values.length
-        let tiledWindows = totalWindows - floatingcounter.count
-        return tiledWindows !== 1
+        return floatingcounter.count
+ !== 1
     }
     anchors {
         top: true
