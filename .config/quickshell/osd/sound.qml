@@ -33,14 +33,13 @@ PanelWindow {
         interval: 1500
         repeat: false
         onTriggered: {
-            contentBox.opacity = 0.0
+        	osdWindow.visible = false
         }
     }
 
     function triggerOSD() {
         // Erst sichtbar machen, dann Transparenz hochfahren
         osdWindow.visible = true
-        contentBox.opacity = 1.0
         hideTimer.restart()
     }
 
@@ -78,20 +77,12 @@ PanelWindow {
         bottomRightRadius: 0
         topLeftRadius: 32
         topRightRadius: 32
-        opacity: 0.0
+        opacity: 1.0
 
         Behavior on opacity {
             NumberAnimation {
                 duration: 200
                 easing.type: Easing.OutCubic
-            }
-        }
-
-        // Sobald die Animation das Fenster vollständig ausgeblendet hat,
-        // wird visible auf false gesetzt, um Mausklicks nicht zu blockieren.
-        onOpacityChanged: {
-            if (opacity === 0.0) {
-                osdWindow.visible = false
             }
         }
 
