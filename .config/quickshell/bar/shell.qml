@@ -12,10 +12,36 @@ import Quickshell.Services.UPower
 
 PanelWindow {
     id: root
+    
+Process {
+        id: floatingcounter
+        // Nutzt die ID des aktiven Workspaces
+        command: ["/home/vetula/.scripts/floatingcounter.sh", Hyprland.focusedWorkspace ? Hyprland.focusedWorkspace.id.toString() : "1"]
+        running: true
+        property int count: 0
+
+        stdout: SplitParser {
+            onRead: data => {
+                let val = parseInt(data.trim())
+                floatingcounter.count = isNaN(val) ? 0 : val
+            }
+        }
+    }
+
+    // Timer als Fallback, falls Fenster geschlossen/geöffnet werden ohne Workspace-Wechsel
+    Timer {
+        interval: 100
+        running: true
+        repeat: true
+        onTriggered: floatingcounter.running = true
+    }
 
     // Ausblenden, wenn exakt 1 Fenster im Workspace aktiv ist
-    visible: Hyprland.focusedWorkspace ? Hyprland.focusedWorkspace.toplevels.values.length !== 1 : true
-
+visible: {
+        let totalWindows = Hyprland.focusedWorkspace.toplevels.values.length
+        let tiledWindows = totalWindows - floatingcounter.count
+        return tiledWindows !== 1
+    }
     anchors {
         top: true
         left: true
