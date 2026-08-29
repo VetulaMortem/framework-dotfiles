@@ -14,7 +14,7 @@ hl.layer_rule({
 	name="layer-slide-top",
 	match = {namespace = "^(waybar|quickshell-bar)$"},
 	animation = "slide top",
-	no_screen_share = true,
+	--no_screen_share = true,
 })
 hl.layer_rule({
 	name="layer-slide-right",
@@ -33,7 +33,6 @@ hl.layer_rule({
 	name="nosharebackground",
 	match = {namespace = "^(hyprpaper|mpvpaper)$"},
 	order = 100
-	--no_screen_share = true,
 })
 hl.layer_rule({
 	name="muteoverlay",
