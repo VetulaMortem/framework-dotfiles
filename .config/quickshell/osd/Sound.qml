@@ -2,8 +2,8 @@
 import QtQuick
 import Quickshell
 import Quickshell.Wayland
-import Quickshell.Io
-
+import Quickshell.Services.Pipewire
+import ".."
 PanelWindow {
     id: osdWindow
 
@@ -16,16 +16,15 @@ PanelWindow {
     implicitHeight: 40
     color: "transparent"
 
-    // Verhindert das Verschieben von Fenstern
     WlrLayershell.layer: WlrLayer.Overlay
     WlrLayershell.exclusiveZone: -1
     WlrLayershell.keyboardFocus: WlrKeyboardFocus.None
     WlrLayershell.namespace: "quickshell-osd"
 
-    property int volumeLevel: 0
-    property bool isMuted: false
+    property int volumeLevel: AudioStore.volumeLevel
+    property bool isMuted: AudioStore.isMuted
 
-    // Das Fenster startet komplett unsichtbar
+
     visible: false
 
     Timer {
@@ -33,39 +32,18 @@ PanelWindow {
         interval: 1500
         repeat: false
         onTriggered: {
-        	osdWindow.visible = false
+            osdWindow.visible = false
         }
     }
 
     function triggerOSD() {
-        // Erst sichtbar machen, dann Transparenz hochfahren
         osdWindow.visible = true
         hideTimer.restart()
     }
 
-    Process {
-        id: volumeMonitor
-        command: ["bash", "-c", "wpctl get-volume @DEFAULT_AUDIO_SINK@; pw-mon | stdbuf -oL grep --line-buffered 'sink' | while read -r line; do wpctl get-volume @DEFAULT_AUDIO_SINK@; done"]
-        running: true
-
-        stdout: SplitParser {
-            splitMarker: "\n"
-            onRead: data => {
-                let str = data.trim()
-                if (str.length === 0) return
-
-                let muted = str.includes("[MUTED]")
-                let match = str.match(/Volume:\s+([0-9.]+)/)
-                let vol = match ? Math.round(parseFloat(match[1]) * 100) : 0
-
-                if (osdWindow.volumeLevel !== vol || osdWindow.isMuted !== muted) {
-                    osdWindow.volumeLevel = vol
-                    osdWindow.isMuted = muted
-                    osdWindow.triggerOSD()
-                }
-            }
-        }
-    }
+    // OSD bei Änderungen triggern
+    onVolumeLevelChanged: triggerOSD()
+    onIsMutedChanged: triggerOSD()
 
     Rectangle {
         id: contentBox
@@ -81,7 +59,7 @@ PanelWindow {
 
         Behavior on opacity {
             NumberAnimation {
-                duration: 200
+                duration: 100
                 easing.type: Easing.OutCubic
             }
         }
@@ -91,7 +69,7 @@ PanelWindow {
             spacing: 14
 
             Text {
-		width: 8
+                width: 8
                 horizontalAlignment: Text.AlignRight
                 anchors.verticalCenter: parent.verticalCenter
                 font.family: "JetBrainsMono NF"
@@ -100,7 +78,6 @@ PanelWindow {
                 text: osdWindow.isMuted ? "󰝟" : (osdWindow.volumeLevel > 50 ? "󰕾" : "󰖀")
             }
 
-// Fortschrittsbalken (Background)
             Rectangle {
                 width: 130
                 height: 10
@@ -108,10 +85,7 @@ PanelWindow {
                 color: "#282828"
                 anchors.verticalCenter: parent.verticalCenter
 
-
-                // 1. Standard-Balken (0 % bis 100 %)
                 Rectangle {
-                    // Stoppt die Breite bei max. 100 % der Lautstärke
                     width: parent.width * (Math.min(osdWindow.volumeLevel, 100) / 100)
                     height: parent.height
                     radius: 5
@@ -122,15 +96,13 @@ PanelWindow {
                     }
                 }
 
-                // 2. Überlap-Balken (101 % bis 200 %)
                 Rectangle {
-                    // Startet erst ab 100 % und wächst von 0 bis 100 % Lautstärke-Überschuss
                     width: osdWindow.volumeLevel > 100
                            ? parent.width * (Math.min(osdWindow.volumeLevel - 100, 100) / 100)
                            : 0
                     height: parent.height
                     radius: 5
-                    color: "#6167AD" // Akzentfarbe für den Boost
+                    color: "#6167AD"
                     visible: !osdWindow.isMuted && osdWindow.volumeLevel > 100
 
                     Behavior on width {
@@ -139,8 +111,8 @@ PanelWindow {
                 }
             }
 
-	    Text {
-		width: 24 // Bietet genug Platz für bis zu "200%"
+            Text {
+                width: 24
                 horizontalAlignment: Text.AlignRight
                 anchors.verticalCenter: parent.verticalCenter
                 font.family: "JetBrainsMono NF"
