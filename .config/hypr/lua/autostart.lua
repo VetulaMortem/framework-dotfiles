@@ -12,6 +12,5 @@ hl.on("hyprland.start",function()
    hl.exec_cmd(home .. ".scripts/setwallpaper.sh")
    hl.exec_cmd("gtk-launch fw-fanctrl-ui")
    hl.exec_cmd("Telegram -startintray")
-   hl.exec_cmd("eww daemon; eww list-windows | xargs -I% eww open %")
 end)
 
