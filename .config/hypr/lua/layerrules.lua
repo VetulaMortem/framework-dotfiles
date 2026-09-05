@@ -1,6 +1,6 @@
 hl.layer_rule({
 	name="wofi-rules",
-	match = { namespace = "wofi" },
+	match = { namespace = "wofi|quickshell-runner" },
 	animation = "slide bottom linear",
 	dim_around = true,
 })
@@ -14,7 +14,6 @@ hl.layer_rule({
 	name="layer-slide-top",
 	match = {namespace = "^(waybar|quickshell-bar)$"},
 	animation = "slide top",
-	--no_screen_share = true,
 })
 hl.layer_rule({
 	name="layer-slide-right",
@@ -38,5 +37,11 @@ hl.layer_rule({
 	name="muteoverlay",
 	match = {namespace = "^(mute_overlay)$"},
 	animation = "slide bottom linear"
+})
+hl.layer_rule({
+	name="chargingoverlay",
+	match = {namespace = "^(quickshell-osdCharge)$"},
+	animation = "popin",
+	dim_around = true,
 })
 

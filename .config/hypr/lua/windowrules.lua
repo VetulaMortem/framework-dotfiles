@@ -100,6 +100,10 @@ hl.window_rule({
 	size = "730 710",
 	animation = "slide top",
 	center = true,
+	rounding = 0,
+	border_color = "rgba(fe7446ff)",
+	border_size = 1,
+	keep_aspect_ratio = true,
 })
 hl.window_rule({
 	name = "Pavucontroll",
