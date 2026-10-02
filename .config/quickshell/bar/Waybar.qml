@@ -76,12 +76,12 @@ visible: {
     component BaseText : Text {
         font.family: "JetBrainsMono NF"
         font.pixelSize: 16
-        color: "#ffffff"
+        color: Theme.text
     }
 
     // Gemeinsame Style-Eigenschaften für alle Inseln
     component Island : Rectangle {
-        color: "#BB2A39"
+        color: Theme.background
         border.color: "#31342B"
         border.width: 3
         bottomLeftRadius: 32
@@ -98,7 +98,6 @@ visible: {
     Process { id: termExec }
     Process { id: bluetoothExec }
     Process { id: pavucontrolExec; command: ["pavucontrol"] }
-    Process { id: swayncExec }
     Process { id: powerProfileSetExec }
 
     // Helper-Timer, um dem System nach dem Umschalten Zeit zu geben, das Profil zu aktualisieren
@@ -175,30 +174,6 @@ visible: {
         property bool dndActive: false
         property int count: 0
 
-        Process {
-            id: swayncStatus
-            command: ["swaync-client", "-s"]
-            running: true
-
-            stdout: SplitParser {
-                splitMarker: "\n"
-                onRead: data => {
-                    let cleaned = data.trim()
-                    if (cleaned.length > 0) {
-                        try {
-                            let json = JSON.parse(cleaned)
-                            centerIsland.dndActive = json.dnd ?? false
-                            centerIsland.count = json.count ?? 0
-                        } catch(e) {}
-                    }
-                }
-            }
-        }
-
-        function updateSwayNc() {
-            swayncStatus.running = true
-        }
-
         SystemClock {
             id: clock
             precision: SystemClock.Minutes
@@ -225,12 +200,10 @@ visible: {
 
                     onClicked: (mouse) => {
                         if (mouse.button === Qt.LeftButton) {
-                            swayncExec.command = ["swaync-client", "-t", "-sw"]
+			    console.log("Not yet implemented");
                         } else if (mouse.button === Qt.RightButton) {
-                            swayncExec.command = ["swaync-client", "-d", "-sw"]
+			    console.log("Not yet implemented");
                         }
-                        swayncExec.running = true
-                        centerIsland.updateSwayNc()
                     }
                 }
             }

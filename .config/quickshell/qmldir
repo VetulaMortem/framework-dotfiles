@@ -1,4 +1,5 @@
 singleton AudioStore 1.0 AudioStore.qml
+singleton Theme 1.0 Theme.qml
 Sound 1.0 osd/Sound.qml
 Battery 1.0 osd/Battery.qml
 Statusinfo 1.0 osd/Statusinfo.qml

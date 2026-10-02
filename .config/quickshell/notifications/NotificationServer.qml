@@ -34,20 +34,22 @@ function getNiceMessage(rawApp,rawSummary,rawBody) {
 		console.log("Neue Notification von: " + notification.summary);
 		notification.tracked = true;
 		if(notification.summary == "debug"){
+			notification.Retainable.lock();
 		}
+		console.log(notification.Retainable.retained);
         }
     }
 
     PanelWindow {
         id: popupWindow
 
-        exclusionMode: ExclusionMode.Ignore
+        //exclusionMode: ExclusionMode.Ignore
         
         anchors {
             top: true
             right: true
         }
-        margins.top: 40
+        margins.top: 5
         margins.right: 5
         
         implicitWidth: 300
