@@ -1,17 +1,21 @@
 hl.workspace_rule({
 	workspace = "w[tv1]", 
 	gaps_out = 0,
-	gaps_in = 0
+	gaps_in = 0,
+	no_rounding = true,
+	no_border = true,
 })
 hl.workspace_rule({
 	workspace = "f[1]", 
 	gaps_out = 0,
-	gaps_in = 0
+	gaps_in = 0,
+	no_rounding = true,
+	no_border = true,
 })
 hl.workspace_rule({
 	workspace = "special:magic", 
 	on_created_empty = "kitty -- btop",
-	layout = "monocle",
+	layout = "scrolling",
 	gaps_out = 0,
 	gaps_in = 0
 })
@@ -23,12 +27,6 @@ hl.workspace_rule({
 	decorate = false,
 	layout = "monocle",
 	on_created_empty = "steam",
-})
-hl.window_rule({
-	name = "smart-border",
-	match = { float = false, workspace = "w[tv1]" },
-	border_size = 0,
-	rounding = 0,
 })
 
 
@@ -42,10 +40,11 @@ hl.window_rule({
 	match = { class = "^(steam)$" , title = "^(.+)$" },
 	float = true,
 	animation = "gnomed",
-	border_color = "rgb(171D25)",
+	border_color = "rgb(282828)",
 	center = true,
-	rounding = 0,
-	decorate = false,
+	rounding = 10,
+	decorate = true,
+	border_size = 4,
 	size = {"(monitor_w*0.6)", "(monitor_h*0.8)"}
 })
 hl.window_rule({
@@ -76,7 +75,7 @@ hl.window_rule({
 	match = {title = "^(.*Picture-in-Picture.*|.*Bild-im-Bild.*)$"},
 	border_color = "rgb(ff0000)",
 	float = true,
-	move = "0 0", 
+	move = "0 0",
 	size = "450 250",
 	rounding = 0,
 	pin = true,
@@ -84,14 +83,6 @@ hl.window_rule({
 	decorate = false,
 	opacity = "0.8",
 	animation = "slide left",
-})
-hl.window_rule({
-	name = "WiFi",
-	match = {class = "^(wifi)$"},
-	float = true,
-	size = {"(monitor_w*0.5)", "(monitor_h*0.5)"},
-	move = {"(monitor_w*0.5)", "50"},
-	animation = "slide right",
 })
 hl.window_rule({
 	name="Task-Manager",
@@ -106,10 +97,10 @@ hl.window_rule({
 	keep_aspect_ratio = true,
 })
 hl.window_rule({
-	name = "Pavucontroll",
-	match = {class ="^(org.pulseaudio.pavucontrol|update)$"},
+	name = "barsliders",
+	match = {class ="^(org.pulseaudio.pavucontrol|update|wifi)$"},
 	size = {"(monitor_w*0.4)", "(monitor_h*0.4)"},
-	move = {"(monitor_w*0.6)", "50"},
+	move = {"(monitor_w*0.6)", "38"},
 	float = true,
 	animation = "slide right",
 	rounding = 0,
@@ -173,9 +164,14 @@ hl.window_rule({
 hl.window_rule({
 	name = "gaming",
 	match = { workspace = "name:gaming" },
-	border_size = 0,
 	rounding = 0,
 	--float = false,
+})
+hl.window_rule({
+	name = "smart-border",
+	match = { float = false, workspace = "w[tv1]" },
+	border_size = 0,
+	rounding = 0,
 })
 
 

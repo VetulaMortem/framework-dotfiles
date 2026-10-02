@@ -13,7 +13,7 @@ PanelWindow {
 anchors {
         left: true
         bottom: true
-    }
+}
     // Verhindert das Verschieben von Fenstern
     WlrLayershell.layer: WlrLayer.Overlay
     WlrLayershell.exclusiveZone: -1

@@ -1,2 +1,2 @@
 require("lua.hyprcurser")
-require("lua.hyprgrass")
+--require("lua.hyprgrass")

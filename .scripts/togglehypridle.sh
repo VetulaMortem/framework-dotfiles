@@ -4,10 +4,10 @@ running=$(systemctl --user status hypridle.service | grep "Active:.*running" | w
 case $running in
 	0)
 		systemctl --user start hypridle.service
-		notify-send "Hypridle toggled on"
+		notify-send "Hypridle toggled on" -a "Hyprland"
 		;;
 	1)
 		systemctl --user stop hypridle.service
-		notify-send "Hypridle toggled off"
+		notify-send "Hypridle toggled off" -a "Hyprland"
 		;;
 esac

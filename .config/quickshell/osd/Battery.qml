@@ -7,7 +7,7 @@ import Quickshell.Io
 PanelWindow {
     id: osdCharge
 
-    width: thetext.implicitWidth+30
+    implicitWidth: thetext.implicitWidth+30
     implicitHeight: 40
     color: "transparent"
 
