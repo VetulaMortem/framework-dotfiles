@@ -3,6 +3,7 @@ import QtQuick
 import Quickshell
 import Quickshell.Wayland
 import Quickshell.Io
+import ".."
 
 PanelWindow {
     id: osdCharge
@@ -65,9 +66,9 @@ Process {
     Rectangle {
         id: contentBox
         anchors.fill: parent
-        color: "#BB2A39"
-        border.color: "#31342B"
-        border.width: 3
+        color: Theme.background
+        border.color: Theme.border
+        border.width: Theme.width
         bottomLeftRadius: 32
         bottomRightRadius: 32
         topLeftRadius: 32
@@ -84,7 +85,7 @@ Process {
                 anchors.verticalCenter: parent.verticalCenter
                 font.family: "JetBrainsMono NF"
                 font.pixelSize: 22
-                color:  "#ffffff"
+                color:  Theme.text
                 text: "󱐋 Charging..."
             }
         }

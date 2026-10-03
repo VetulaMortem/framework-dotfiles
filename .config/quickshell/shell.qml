@@ -14,6 +14,7 @@ ShellRoot {
     Wofi {}
     Statusinfo {}
     NotificationServer {}
+    NotificationCenter {}
 
 
 Scope {

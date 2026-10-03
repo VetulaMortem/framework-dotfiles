@@ -48,9 +48,9 @@ PanelWindow {
     Rectangle {
         id: contentBox
         anchors.fill: parent
-        color: "#BB2A39"
-        border.color: "#31342B"
-        border.width: 3
+        color: Theme.background
+        border.color: Theme.border
+        border.width: Theme.width
         bottomLeftRadius: 0
         bottomRightRadius: 0
         topLeftRadius: 32
@@ -74,7 +74,7 @@ PanelWindow {
                 anchors.verticalCenter: parent.verticalCenter
                 font.family: "JetBrainsMono NF"
                 font.pixelSize: 22
-                color: osdWindow.isMuted ? "#ff5545" : "#ffffff"
+                color: osdWindow.isMuted ? Theme.alternate : Theme.text
                 text: osdWindow.isMuted ? "󰝟" : (osdWindow.volumeLevel > 50 ? "󰕾" : "󰖀")
             }
 
@@ -82,14 +82,14 @@ PanelWindow {
                 width: 130
                 height: 10
                 radius: 5
-                color: "#282828"
+                color: Theme.alternate
                 anchors.verticalCenter: parent.verticalCenter
 
                 Rectangle {
                     width: parent.width * (Math.min(osdWindow.volumeLevel, 100) / 100)
                     height: parent.height
                     radius: 5
-                    color: osdWindow.isMuted ? "#ff5545" : "#FE7446"
+                    color: osdWindow.isMuted ? Theme.alternate : Theme.accent
 
                     Behavior on width {
                         NumberAnimation { duration: 200; easing.type: Easing.OutCubic }
@@ -102,7 +102,7 @@ PanelWindow {
                            : 0
                     height: parent.height
                     radius: 5
-                    color: "#6167AD"
+                    color: Theme.secondary
                     visible: !osdWindow.isMuted && osdWindow.volumeLevel > 100
 
                     Behavior on width {
@@ -118,7 +118,7 @@ PanelWindow {
                 font.family: "JetBrainsMono NF"
                 font.pixelSize: 14
                 font.bold: true
-                color: "#ffffff"
+                color: Theme.text
                 text: osdWindow.volumeLevel + "%"
             }
         }

@@ -6,6 +6,7 @@ import Quickshell
 import Quickshell.Wayland
 import Quickshell.Widgets
 import Quickshell.Io
+import ".."
 
 PanelWindow {
     id: root
@@ -193,9 +194,9 @@ function selectClipboardItem(item) {
         anchors.centerIn: parent
         implicitWidth: rowlayout.width + 40
         implicitHeight: 500
-        color: "#BB2A39"
-        border.color: "#31342B"
-        border.width: 3
+        color: Theme.background
+        border.color: Theme.border
+        border.width: Theme.width
         radius: 12
 
         MouseArea {
@@ -218,12 +219,12 @@ function selectClipboardItem(item) {
                     implicitWidth: 80
                     implicitHeight: 26
                     radius: 6
-                    color: root.currentMode === "apps" ? "#89b4fa" : "#313244"
+                    color: root.currentMode === "apps" ? Theme.secondary : Theme.border
 
                     Text {
                         anchors.centerIn: parent
                         text: "Apps"
-                        color: root.currentMode === "apps" ? "#11111b" : "#cdd6f4"
+                        color: root.currentMode === "apps" ? Theme.alternatetext : Theme.secondary
                         font.bold: true
                         font.pixelSize: 11
                     }
@@ -238,12 +239,12 @@ function selectClipboardItem(item) {
                     implicitWidth: 90
                     implicitHeight: 26
                     radius: 6
-                    color: root.currentMode === "clipboard" ? "#89b4fa" : "#313244"
+                    color: root.currentMode === "clipboard" ? Theme.secondary : Theme.border
 
                     Text {
                         anchors.centerIn: parent
                         text: "Clipboard"
-                        color: root.currentMode === "clipboard" ? "#11111b" : "#cdd6f4"
+                        color: root.currentMode === "clipboard" ? Theme.alternatetext : Theme.secondary
                         font.bold: true
                         font.pixelSize: 11
                     }
@@ -258,7 +259,7 @@ function selectClipboardItem(item) {
 
                 Text {
                     text: "[Tab] Modus wechseln"
-                    color: "#a6adc8"
+                    color: Theme.alternate
                     font.pixelSize: 10
                 }
             }
@@ -270,12 +271,12 @@ function selectClipboardItem(item) {
                 placeholderText: root.currentMode === "apps" ? "App suchen..." : "Clipboard durchsuchen..."
                 focus: true
                 font.pixelSize: 14
-                color: "#5CBD88"
+                color: Theme.primary
 
                 background: Rectangle {
-                    color: "#181825"
+                    color: Theme.alternate
                     radius: 8
-                    border.color: searchInput.activeFocus ? "#89b4fa" : "#313244"
+                    border.color: searchInput.activeFocus ? Theme.secondary : Theme.border
                     border.width: 1
                 }
 
@@ -318,8 +319,8 @@ function selectClipboardItem(item) {
                     radius: 8
 
                     property bool isSelected: ListView.isCurrentItem
-                    color: isSelected ? "#5CBD88" : (mouseArea.containsMouse ? "#89b4fa" : "transparent")
-       		    border.color: isSelected ? "#31342B" : (mouseArea.containsMouse ? "#181825" : "transparent")
+                    color: isSelected ? Theme.primary : (mouseArea.containsMouse ? Theme.secondary : "transparent")
+       		    border.color: isSelected ? Theme.border : (mouseArea.containsMouse ? Theme.alternatetext : "transparent")
 	            border.width: 2
                     function activate() {
                         if (root.currentMode === "apps") {
@@ -347,7 +348,7 @@ function selectClipboardItem(item) {
                         Text {
                             Layout.fillWidth: true
                             text: root.currentMode === "apps" ? modelData.name : modelData
-                            color: "#cdd6f4"
+                            color: Theme.text
                             font.pixelSize: 13
                             font.bold: delegateItem.isSelected
                             elide: Text.ElideRight

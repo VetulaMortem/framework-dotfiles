@@ -82,8 +82,8 @@ visible: {
     // Gemeinsame Style-Eigenschaften für alle Inseln
     component Island : Rectangle {
         color: Theme.background
-        border.color: "#31342B"
-        border.width: 3
+        border.color: Theme.border
+        border.width: Theme.width
         bottomLeftRadius: 32
         bottomRightRadius: 32
         topLeftRadius: 0
@@ -131,7 +131,7 @@ visible: {
                     property bool isActive: Hyprland.focusedWorkspace ? Hyprland.focusedWorkspace.id === wsId : false
                     property bool isOccupied: Hyprland.workspaces.values.some(ws => ws.id === wsId && ws.toplevels.values.length > 0)
 		    property bool isHovered: false
-		    property string normalColor: isHovered ? "#6167AD" : isActive ? "#FE7446" : (isOccupied ? "#5CBD88" : "#282828")
+		    property string normalColor: isHovered ? Theme.secondary : isActive ? Theme.accent : (isOccupied ? Theme.primary : Theme.alternate)
                     width: isActive ? 32 : 12
                     height: 12
                     radius: 8
@@ -190,7 +190,7 @@ visible: {
             }
 
             BaseText {
-                color: centerIsland.count > 0 ? "#ff5545" : (centerIsland.dndActive ? "#888888" : "#ffffff")
+                color: centerIsland.count > 0 ? Theme.alternate : (centerIsland.dndActive ? Theme.border : Theme.text)
                 text: centerIsland.dndActive ? "󰂛" : (centerIsland.count > 0 ? "󱅫" : "󰂚")
 
                 MouseArea {
@@ -200,7 +200,7 @@ visible: {
 
                     onClicked: (mouse) => {
                         if (mouse.button === Qt.LeftButton) {
-			    console.log("Not yet implemented");
+			    StateStore.notificationCenterOpen = !StateStore.notificationCenterOpen;
                         } else if (mouse.button === Qt.RightButton) {
 			    console.log("Not yet implemented");
                         }
@@ -326,7 +326,7 @@ visible: {
                 spacing: 4
                 BaseText {
                     font.bold: true
-                    color: "#6167AD"
+                    color: Theme.secondary
                     text: ""
 
                     MouseArea {
@@ -347,8 +347,8 @@ visible: {
                 property var device: UPower.displayDevice
 
                 BaseText {
-                    color: parent.device && parent.device.state === UPowerDeviceState.Charging ? "#a6e3a1" : 
-                           (parent.device && parent.device.percentage <= 0.2 ? "#ff5545" : "#ffffff")
+                    color: parent.device && parent.device.state === UPowerDeviceState.Charging ? Theme.primary : 
+                           (parent.device && parent.device.percentage <= 0.2 ? Theme.alternate : Theme.text)
 
                     text: {
                         if (!parent.device) return ""
@@ -374,7 +374,7 @@ visible: {
                 spacing: 4
 
                 BaseText {
-                    color: root.isMuted ? "#ff5545" : "#ffffff"
+                    color: root.isMuted ? Theme.alternate : Theme.text
                     text: root.isMuted ? "󰝟" : (root.volumeLevel > 50 ? "󰕾" : "󰖀") + " " +root.volumeLevel + "%"
 
                     MouseArea {
@@ -439,9 +439,9 @@ visible: {
             BaseText {
                 color: {
                     switch (powerProfileProc.currentProfile) {
-                        case "performance": return "#6167AD"
-                        case "power-saver": return "#5CBD88"
-                        default: return "#ffffff"
+                        case "performance": return Theme.secondary
+                        case "power-saver": return Theme.primary
+                        default: return Theme.text
                     }
                 }
 

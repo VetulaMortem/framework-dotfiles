@@ -2,9 +2,14 @@ import Quickshell
 import Quickshell.Services.Notifications
 import QtQuick
 import QtQuick.Layouts
-
+import ".."
 Scope {
 	// Funktion zum Mappen von App-Namen
+function realDismiss(rawMessage) {
+	StateStore.centerMessages = Array.from(StateStore.centerMessages).filter(r => r !== rawMessage)
+	rawMessage.dismiss();
+	StateStore.newMessages = Array.from(StateStore.newMessages).filter(r => r !== rawMessage)
+}
 function getNiceAppName(rawName) {
     if (!rawName || rawName === "") return "System";
 
@@ -23,6 +28,7 @@ function getNiceAppName(rawName) {
     return nameMap[rawName] !== undefined ? nameMap[rawName] : rawName;
 }
 function getNiceMessage(rawApp,rawSummary,rawBody) {
+	if (rawSummary == "debug") return StateStore.newMessages.length;
 	if (rawBody != "") return rawBody;
 	else return rawSummary;
 }
@@ -33,8 +39,9 @@ function getNiceMessage(rawApp,rawSummary,rawBody) {
         onNotification: (notification) => {
 		console.log("Neue Notification von: " + notification.summary);
 		notification.tracked = true;
+		StateStore.newMessages.push(notification);
+		StateStore.centerMessages.push(notification);
 		if(notification.summary == "debug"){
-			notification.Retainable.lock();
 		}
 		console.log(notification.Retainable.retained);
         }
@@ -43,7 +50,7 @@ function getNiceMessage(rawApp,rawSummary,rawBody) {
     PanelWindow {
         id: popupWindow
 
-        //exclusionMode: ExclusionMode.Ignore
+        exclusionMode: ExclusionMode.Normal
         
         anchors {
             top: true
@@ -65,17 +72,17 @@ function getNiceMessage(rawApp,rawSummary,rawBody) {
             // WICHTIG: Kein anchors.fill: parent, sondern Höhe an Inhalt koppeln!
             height: contentHeight
             spacing: 10
-            model: notificationServer.trackedNotifications
+            model: StateStore.newMessages
 
             delegate: Rectangle {
                 required property Notification modelData
 
                 width: 300
                 height: colLayout.implicitHeight + 20
-                color: "#BB2A39"
-		border.color: "#31342B"
-                border.width: 3
-                radius: 8
+                color: Theme.background
+		border.color: Theme.border
+                border.width: Theme.width
+                radius: Theme.radius
 
                 MouseArea {
                     anchors.fill: parent
@@ -95,7 +102,7 @@ function getNiceMessage(rawApp,rawSummary,rawBody) {
                         
                         Text {
                             text: getNiceAppName(modelData.appName)
-                            color: "#5CBD88"
+                            color: Theme.primary
                             font.bold: true
                             font.pixelSize: 12
                         }
@@ -104,19 +111,19 @@ function getNiceMessage(rawApp,rawSummary,rawBody) {
                         
                         Text {
                             text: "✕"
-                            color: "#FE7446"
+                            color: Theme.accent
                             font.bold: true
                             
                             MouseArea {
                                 anchors.fill: parent
-                                onClicked: modelData.dismiss()
+                                onClicked: realDismiss(modelData)
                             }
                         }
                     }
 
                     Text {
 			    text: getNiceMessage(modelData.appName,modelData.summary,modelData.body)
-                        color: "#ffffff"
+                        color: Theme.text
                         Layout.fillWidth: true
                         wrapMode: Text.WordWrap
                         visible: text !== ""
@@ -128,7 +135,8 @@ function getNiceMessage(rawApp,rawSummary,rawBody) {
                     interval: modelData.expireTimeout > 0 ? modelData.expireTimeout : 5000
                     running: true
                     repeat: false
-                    onTriggered: modelData.expire()
+                    onTriggered: StateStore.newMessages = Array.from(StateStore.newMessages).filter(r => r !== modelData)
+
 		} 
             }
         }

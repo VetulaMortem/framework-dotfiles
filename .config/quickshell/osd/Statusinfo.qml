@@ -47,9 +47,9 @@ Process {
         anchors.fill: parent
 	anchors.leftMargin: -3
 	anchors.bottomMargin: -3
-        color: "#BB2A39"
-        border.color: "#31342B"
-        border.width: 3
+        color: Theme.background
+        border.color: Theme.border
+        border.width: Theme.width
         bottomLeftRadius: 0
         bottomRightRadius: 0
         topLeftRadius: 0
@@ -68,7 +68,7 @@ Process {
                 anchors.verticalCenter: parent.verticalCenter
                 font.family: "JetBrainsMono NF"
                 font.pixelSize: 22
-                color:  "#ffffff"
+                color:  Theme.text
 		text: (isMuted ? "󰝟" : "")
 		MouseArea {
                         anchors.fill: parent
@@ -86,7 +86,7 @@ Process {
                 anchors.verticalCenter: parent.verticalCenter
                 font.family: "JetBrainsMono NF"
                 font.pixelSize: 22
-                color:  "#ffffff"
+                color:  Theme.text
                 text: (getCapslockstate.buttonstate == 1 ? "󰘲" : "")
             }
         }

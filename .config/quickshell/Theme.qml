@@ -9,6 +9,8 @@ QtObject {
 	readonly property color primary: "#5CBD88"
 	readonly property color secondary: "#6167AD"
 	readonly property color text: "#ffffff"
+	readonly property color alternatetext: "#000000"
 
-	readonly property int radius: 3
+	readonly property int radius: 8
+	readonly property int width: 3
 }
