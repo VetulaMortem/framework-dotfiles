@@ -2,6 +2,7 @@ import Quickshell
 import Quickshell.Services.Notifications
 import QtQuick
 import QtQuick.Layouts
+import Quickshell.Wayland
 import ".."
 Scope {
 	// Funktion zum Mappen von App-Namen
@@ -39,7 +40,9 @@ function getNiceMessage(rawApp,rawSummary,rawBody) {
         onNotification: (notification) => {
 		console.log("Neue Notification von: " + notification.summary);
 		notification.tracked = true;
-		StateStore.newMessages.push(notification);
+		if(!StateStore.doNotDisturb){
+			StateStore.newMessages.push(notification);
+		}
 		StateStore.centerMessages.push(notification);
 		if(notification.summary == "debug"){
 		}
@@ -51,7 +54,8 @@ function getNiceMessage(rawApp,rawSummary,rawBody) {
         id: popupWindow
 
         exclusionMode: ExclusionMode.Normal
-        
+	WlrLayershell.layer: WlrLayer.Overlay
+        WlrLayershell.namespace: "quickshell-notification"
         anchors {
             top: true
             right: true
@@ -64,7 +68,7 @@ function getNiceMessage(rawApp,rawSummary,rawBody) {
         implicitHeight: listView.contentHeight > 0 ? listView.contentHeight + 20 : 0
         color: "transparent"
         
-        visible: notificationServer.notificationCount > 0
+        visible: StateStore.newMessages.length > 0
 
         ListView {
             id: listView

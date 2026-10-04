@@ -15,6 +15,7 @@ ShellRoot {
     Statusinfo {}
     NotificationServer {}
     NotificationCenter {}
+    IdleInhibitor {}
 
 
 Scope {
@@ -51,6 +52,12 @@ Scope {
     target: "shell"
         function reload(): void {
             Quickshell.reload(false);
+        }
+    }
+    IpcHandler {
+    target: "notifications"
+        function toggle(): void {
+            StateStore.notificationCenterOpen = !StateStore.notificationCenterOpen;
         }
     }
 }

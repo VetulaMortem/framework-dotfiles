@@ -14,7 +14,7 @@ import Quickshell.Networking
 import ".."
 PanelWindow {
 	id: root
-	
+
 	property int volumeLevel: AudioStore.volumeLevel
 	property bool isMuted: AudioStore.isMuted
 
@@ -69,7 +69,7 @@ visible: {
     color: "transparent"
 
     WlrLayershell.layer: WlrLayer.Top
-    WlrLayershell.exclusiveZone: 38
+    WlrLayershell.exclusiveZone: implicitHeight
     WlrLayershell.namespace: "quickshell-bar"
 
     // Baustein: Basis-Text für Icons & Standard-Font
@@ -84,14 +84,14 @@ visible: {
         color: Theme.background
         border.color: Theme.border
         border.width: Theme.width
-        bottomLeftRadius: 32
-        bottomRightRadius: 32
+        bottomLeftRadius: Theme.radius * 4
+        bottomRightRadius: Theme.radius * 4 
         topLeftRadius: 0
         topRightRadius: 0
         height: 41
 
         anchors.top: parent.top
-        anchors.topMargin: -4
+        anchors.topMargin: -3
     }
 
     // Singletons für globale Shell-Execs
@@ -171,7 +171,7 @@ visible: {
         anchors.horizontalCenter: parent.horizontalCenter
         width: clockRow.implicitWidth + 28
 
-        property bool dndActive: false
+        property bool dndActive: StateStore.doNotDisturb
         property int count: 0
 
         SystemClock {
@@ -190,8 +190,8 @@ visible: {
             }
 
             BaseText {
-                color: centerIsland.count > 0 ? Theme.alternate : (centerIsland.dndActive ? Theme.border : Theme.text)
-                text: centerIsland.dndActive ? "󰂛" : (centerIsland.count > 0 ? "󱅫" : "󰂚")
+		    color: centerIsland.dndActive ? (StateStore.centerMessages.length > 0 ? Theme.secondary : Theme.alternate) : (StateStore.centerMessages.length > 0 ? Theme.primary : Theme.text)
+                text: centerIsland.dndActive ? "󰂛" : (StateStore.centerMessages.length > 0 ? "󱅫" : "󰂚")
 
                 MouseArea {
                     anchors.fill: parent
@@ -202,7 +202,7 @@ visible: {
                         if (mouse.button === Qt.LeftButton) {
 			    StateStore.notificationCenterOpen = !StateStore.notificationCenterOpen;
                         } else if (mouse.button === Qt.RightButton) {
-			    console.log("Not yet implemented");
+			    StateStore.doNotDisturb = !StateStore.doNotDisturb;
                         }
                     }
                 }
@@ -217,8 +217,8 @@ visible: {
         id: rightIsland
         anchors.right: parent.right
         width: trayRow.implicitWidth + 32
-
-        // Pacman Updates
+	bottomRightRadius: StateStore.notificationCenterOpen ? 0 : Theme.radius * 4 
+	// Pacman Updates
         Process {
             id: updateProc
             command: ["bash", "-c", "checkupdates 2>/dev/null | wc -l"]
@@ -285,7 +285,6 @@ visible: {
                     }
                 }
             }
-
             // System Tray Items
             Repeater {
                 model: SystemTray.items
@@ -320,7 +319,6 @@ visible: {
                     }
                 }
             }
-
             // Bluetooth
             Row {
                 spacing: 4
@@ -340,6 +338,23 @@ visible: {
                 }
             }
 
+            // Bluetooth
+            Row {
+                spacing: 4
+                BaseText {
+                    font.bold: true
+                    color: StateStore.idleInhibited ? Theme.primary : Theme.text
+                    text: StateStore.idleInhibited ? "󰈉" : "󰈈"
+			//TODO Idle controll
+                    MouseArea {
+                        anchors.fill: parent
+                        cursorShape: Qt.PointingHandCursor
+                        onClicked: {
+				StateStore.idleInhibited = !StateStore.idleInhibited
+			}
+                    }
+                }
+            }
             // Akku (UPower)
             Row {
                 spacing: 4

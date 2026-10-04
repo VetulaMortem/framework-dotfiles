@@ -51,7 +51,7 @@ hl.bind(mainMod .. " + CTRL + D" , hl.dsp.exec_cmd("hyprctl eval 'hl.config({deb
 hl.bind(mainMod .. " + CTRL + SHIFT + D" , hl.dsp.exec_cmd("hyprctl eval 'hl.config({debug = { overlay = false }})'"))
 hl.bind("CTRL + SHIFT + Q" , hl.dsp.exec_cmd(home .. ".scripts/commandwrapper.sh " .. terminal .. "\" -o background_opacity=1.0 --class btop -e btop\"")) 
 hl.bind(mainMod .. " + Q", hl.dsp.exec_cmd(terminal))
-hl.bind(mainMod .. " + N", hl.dsp.exec_cmd("swaync-client -t -sw"))
+hl.bind(mainMod .. " + N", hl.dsp.exec_cmd("qs ipc call notifications toggle"))
 hl.bind(mainMod .. " + ALT + 1" , hl.dsp.exec_cmd("hyprctl eval 'hl.config({cursor = {zoom_factor = 1.0}})'"))
 hl.bind(mainMod .. " + ALT + 2" , hl.dsp.exec_cmd("hyprctl eval 'hl.config({cursor = {zoom_factor = 2.0}})'"))
 hl.bind(mainMod .. " + M", hl.dsp.exec_cmd(home .. ".scripts/logouthyprland.sh"), { locked = true })

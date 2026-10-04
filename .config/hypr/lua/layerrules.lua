@@ -6,7 +6,7 @@ hl.layer_rule({
 })
 hl.layer_rule({
 	name="layer-slide-top",
-	match = {namespace = "^(swaync-notification-window|swaync-control-center)$"},
+	match = {namespace = "^(quickshell-notificationCenter)$"},
 	animation = "slide top",
 	no_screen_share = false,
 })
@@ -17,10 +17,11 @@ hl.layer_rule({
 })
 hl.layer_rule({
 	name="layer-slide-right",
-	match = {namespace = "^(swaync-control-center)$"},
+	match = {namespace = "^(quickshell-notificationCenter)$"},
 	animation = "slide right",
 	no_screen_share = true,
 	dim_around = true,
+	blur = true,
 })
 hl.layer_rule({
 	name="layer-slide-bottom",

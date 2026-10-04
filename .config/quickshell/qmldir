@@ -8,3 +8,4 @@ Waybar 1.0 bar/Waybar.qml
 Wofi 1.0 runner/Wofi.qml
 NotificationServer 1.0 notifications/NotificationServer.qml
 NotificationCenter 1.0 notifications/NotificationCenter.qml
+IdleInhibitor 1.0 stuff/IdleInhibitor.qml
