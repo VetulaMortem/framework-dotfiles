@@ -1,0 +1,12 @@
+{
+  "colors": {
+    "background": "{{color0}}",
+    "alternate": "{{color1}}",
+    "primary": "{{color2}}",
+    "accent": "{{color3}}",
+    "secondary": "{{color4}}",
+    "border": "{{color5}}",
+    "text": "{{color7}}",
+    "alternatetext": "{{color0}}"
+  }
+}
