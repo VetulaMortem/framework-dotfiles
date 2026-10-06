@@ -344,7 +344,7 @@ visible: {
                 BaseText {
                     font.bold: true
                     color: StateStore.idleInhibited ? Theme.primary : Theme.text
-                    text: StateStore.idleInhibited ? "󰈉" : "󰈈"
+                    text: StateStore.idleInhibited ? "󰈈" : "󰈉"
 			//TODO Idle controll
                     MouseArea {
                         anchors.fill: parent

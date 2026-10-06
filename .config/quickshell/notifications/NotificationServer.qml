@@ -40,7 +40,7 @@ function getNiceMessage(rawApp,rawSummary,rawBody) {
         onNotification: (notification) => {
 		console.log("Neue Notification von: " + notification.summary);
 		notification.tracked = true;
-		if(!StateStore.doNotDisturb){
+		if(!StateStore.doNotDisturb && !notification.lastGeneration){
 			StateStore.newMessages.push(notification);
 		}
 		StateStore.centerMessages.push(notification);

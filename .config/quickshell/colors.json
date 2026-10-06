@@ -1,0 +1,12 @@
+{
+  "colors": {
+    "background": "#3E3F37",
+    "alternate": "#C25C2A",
+    "primary": "#3EAB74",
+    "accent": "#7BA64A",
+    "secondary": "#32316A",
+    "border": "#AE285C",
+    "text": "#F5DECF",
+    "alternatetext": "#3E3F37"
+  }
+}

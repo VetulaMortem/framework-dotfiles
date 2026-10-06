@@ -6,6 +6,10 @@ import QtQuick.Controls
 import Quickshell.Wayland
 import ".."
 Scope {
+    function removeMessage(rawMessage) {
+	StateStore.newMessages = Array.from(StateStore.newMessages).filter(r => r !== rawMessage)
+	StateStore.centerMessages = Array.from(StateStore.centerMessages).filter(r => r !== rawMessage)
+    }
     function realDismiss(rawMessage) {
 	StateStore.newMessages = Array.from(StateStore.newMessages).filter(r => r !== rawMessage)
 	rawMessage.dismiss();
@@ -154,58 +158,103 @@ Scope {
 				}
 			    }
 			    // ----------------------------------------------
+			delegate: Rectangle {
+			    required property Notification modelData
+			    property Notification henry : modelData
+			    width: listView.width
+			    height: colLayout.implicitHeight + 16
+			    color: Theme.secondary
+			    border.color: Theme.border
+			    border.width: Theme.width
+			    radius: 6
 
-			    delegate: Rectangle {
-				required property Notification modelData
+			    ColumnLayout {
+				id: colLayout
+				anchors.fill: parent
+				anchors.margins: 10
+				spacing: 4
 
-				width: listView.width
-				height: colLayout.implicitHeight + 16
-				color: Theme.secondary
-				border.color: Theme.border
-				border.width: Theme.width
-				radius: 6
-
-				ColumnLayout {
-				    id: colLayout
-				    anchors.fill: parent
-				    anchors.margins: 10
-				    spacing: 4
-
-				    RowLayout {
+				// Zeile 1: Summary und Löschen-Button
+				RowLayout {
+				    Layout.fillWidth: true
+				    
+				    Text {
+					text: modelData.summary != "" ? modelData.summary : "ERROR"
+					color: Theme.text
+					font.bold: true
+					font.pixelSize: 13
 					Layout.fillWidth: true
-					
-					Text {
-						text: modelData.summary != "" ? modelData.summary : "ERROR"
-					    color: Theme.text
-					    font.bold: true
-					    font.pixelSize: 13
-					    Layout.fillWidth: true
-					    wrapMode: Text.WordWrap
-					}
-
-					Text {
-					    text: "🗑"
-					    color: Theme.text
-					    font.pixelSize: 11
-					    
-					    MouseArea {
-						anchors.fill: parent
-						onClicked: realDismiss(modelData)
-
-					    }
-					}
+					wrapMode: Text.WordWrap
 				    }
 
 				    Text {
-					text: modelData.body
-					color: Theme.textSecondary
-					font.pixelSize: 12
-					Layout.fillWidth: true
-					wrapMode: Text.WordWrap
-					visible: text !== ""
+					text: "🗑"
+					color: Theme.text
+					font.pixelSize: 11
+					
+					MouseArea {
+					    anchors.fill: parent
+					    onClicked: realDismiss(modelData)
+					}
+				    }
+				}
+
+				// Zeile 2: Body Text (falls vorhanden)
+				Text {
+				    text: modelData.body
+				    color: Theme.text
+				    font.pixelSize: 12
+				    Layout.fillWidth: true
+				    wrapMode: Text.WordWrap
+				    visible: text !== ""
+				}
+
+				// Zeile 3: Aktionen / Buttons (nur anzeigen, wenn actions vorhanden sind)
+				Flow {
+				    Layout.fillWidth: true
+				    spacing: 6
+				    visible: modelData.actions.length > 0
+
+				    Repeater {
+					model: modelData.actions
+
+					delegate: Rectangle {
+					    // modelData ist hier das einzelne Action-Objekt
+					    // (abhängig von der Version evtl. .text oder .name verwenden)
+					    property var actionObject: modelData 
+
+					    width: actionText.implicitWidth + 20
+					    height: 24
+					    color: Theme.primary // Passe dies an dein Theme an
+					    border.color: Theme.border
+					    border.width: 1
+					    radius: 4
+
+					    Text {
+						id: actionText
+						text: actionObject.text ?? actionObject.name ?? "Action"
+						color: Theme.text
+						font.pixelSize: 11
+						anchors.centerIn: parent
+					    }
+
+					    MouseArea {
+						anchors.fill: parent
+						onClicked: {
+						    // Aktion ausführen (je nach Quickshell-Version 
+						    // entfallen Aufrufe direkt über das Notification-Objekt
+						    // oder via NotificationManager)
+						    actionObject.invoke?.(); 
+						    removeMessage(henry);
+						    // Alternativ, falls dein Notification-Modell eine Funktion anbietet:
+						    // modelData.invokeAction(actionObject.id);
+						}
+					    }
+					}
 				    }
 				}
 			    }
+			}
 			}
 		    }
 		}

@@ -1,0 +1,18 @@
+pragma Singleton
+import QtQuick
+
+QtObject {
+	property color background: "#BB2A39"
+	property color accent: "#FE7446"
+	property color alternate: "#282828"
+	property color border: "#31342B"
+	property color primary: "#5CBD88"
+	property color primaryTransparent: "#B05CBD88"
+	property color secondary: "#6167AD"
+	property color secondaryTransparent: "#B06167AD"
+	property color text: "#ffffff"
+	property color alternatetext: "#000000"
+
+	readonly property int radius: 8
+	readonly property int width: 3
+}

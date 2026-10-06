@@ -5,10 +5,10 @@ hl.layer_rule({
 	dim_around = true,
 })
 hl.layer_rule({
-	name="layer-slide-top",
-	match = {namespace = "^(quickshell-notificationCenter)$"},
+	name="layer-slide-msg",
+	match = {namespace = "quickshell-notification"},
 	animation = "slide top",
-	no_screen_share = false,
+	no_screen_share = true,
 })
 hl.layer_rule({
 	name="layer-slide-top",
@@ -19,7 +19,7 @@ hl.layer_rule({
 	name="layer-slide-right",
 	match = {namespace = "^(quickshell-notificationCenter)$"},
 	animation = "slide right",
-	no_screen_share = true,
+	--no_screen_share = true,
 	dim_around = true,
 	blur = true,
 })
