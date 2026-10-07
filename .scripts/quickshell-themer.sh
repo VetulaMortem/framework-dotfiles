@@ -11,6 +11,8 @@ if [ -n "$MANUAL_THEME" ] && [ -f "$MANUAL_THEME" ]; then
     cp -v "$MANUAL_THEME" "$QUICKSHELL_DIR/ThemeColors.qml"
     themename=$(basename $MANUAL_THEME .qml)
     cp -v $HOME/.assets/kitty_themes/$themename.conf $HOME/.config/kitty/theme.conf 
+    cp -v $HOME/.assets/cava_themes/$themename $HOME/.config/cava/themes/framework
+    cp -v $HOME/.assets/nvim_themes/$themename.lua $HOME/.config/nvim/lua/theme/framework.lua
 else
     echo "Lasse Wallust Farben generieren..."
     wallust run "$NEW_WALLPAPER"
