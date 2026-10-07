@@ -2,14 +2,14 @@
 import QtQuick
 
 QtObject {
-    readonly property color background: "#121224"
-    readonly property color accent: "#812A39"
-    readonly property color alternate: "#70585E"
-    readonly property color border: "#603B46"
-    readonly property color primary: "#3F151C"
-    readonly property color primaryTransparent: "#B03F151C"
-    readonly property color secondary: "#B89BA3"
-    readonly property color secondaryTransparent: "#B0B89BA3"
-    readonly property color text: "#FFAEC7"
-    readonly property color alternatetext: "#121224"
+	readonly property color background: "#BB2A39"
+	readonly property color accent: "#FE7446"
+	readonly property color alternate: "#282828"
+	readonly property color border: "#31342B"
+	readonly property color primary: "#5CBD88"
+	readonly property color primaryTransparent: "#B05CBD88"
+	readonly property color secondary: "#6167AD"
+	readonly property color secondaryTransparent: "#B06167AD"
+	readonly property color text: "#ffffff"
+	readonly property color alternatetext: "#000000"
 }

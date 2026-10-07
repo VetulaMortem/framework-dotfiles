@@ -1,6 +1,7 @@
 -------------------
 ---- VARIABLES ----
 -------------------
+require("lua.colorTheme")
 home = "/home/vetula/"
 mainMod = "SUPER"
 terminal = "kitty"

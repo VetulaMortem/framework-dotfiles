@@ -40,7 +40,7 @@ hl.window_rule({
 	match = { class = "^(steam)$" , title = "^(.+)$" },
 	float = true,
 	animation = "gnomed",
-	border_color = "rgb(282828)",
+	border_color = "rgb("..steamBorder..")",
 	center = true,
 	rounding = 10,
 	decorate = true,
@@ -73,7 +73,7 @@ hl.window_rule({
 hl.window_rule({
 	name = "PIP-Rules",
 	match = {title = "^(.*Picture-in-Picture.*|.*Bild-im-Bild.*)$"},
-	border_color = "rgb(ff0000)",
+	border_color = "rgb("..pipBorder..")",
 	float = true,
 	move = "0 0",
 	size = "450 250",
@@ -92,7 +92,7 @@ hl.window_rule({
 	animation = "slide top",
 	center = true,
 	rounding = 0,
-	border_color = "rgba(fe7446ff)",
+	border_color = "rgba(".. nvimBorder ..")",
 	border_size = 1,
 	keep_aspect_ratio = true,
 })
@@ -118,7 +118,7 @@ hl.window_rule({
 hl.window_rule({
 	name = "YouTube",
 	match = {title = "^(.*YouTube.*)$"},
-	border_color = "rgb(ffdd00)",
+	border_color = "rgb("..ytBorder..")",
 })
 hl.window_rule({
 	name="Steam-Big-Picture",
@@ -153,7 +153,7 @@ hl.window_rule({
 	opaque = true,
 	idle_inhibit = "focus",
 	decorate = true,
-	border_color = "rgba(fe7446ff)",
+	border_color = "rgba(" .. nvimBorder .. ")",
 	border_size = 4,
 })
 hl.window_rule({
