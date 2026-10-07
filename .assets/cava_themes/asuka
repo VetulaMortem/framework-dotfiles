@@ -1,0 +1,15 @@
+# ==== CAVA COLOR THEME (Asuka) ====
+[color]
+foreground = '#FBD1B6'
+
+gradient = 1
+gradient_count = 7
+
+gradient_color_1 = '#1E181A'  # dark base
+gradient_color_2 = '#AB3038'  # deep suit red
+gradient_color_3 = '#C24F40'  # red-orange
+gradient_color_4 = '#EA6849'  # warm orange
+gradient_color_5 = '#ED8873'  # coral
+gradient_color_6 = '#F6A894'  # soft light coral
+gradient_color_7 = '#FBD1B6'  # peach highlight
+
