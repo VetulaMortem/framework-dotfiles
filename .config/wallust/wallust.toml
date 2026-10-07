@@ -84,6 +84,7 @@ quickshell = { src = "ThemeColors.qml", target = "~/.config/quickshell/ThemeColo
 kitty = { src = "kitty.conf", target = "~/.config/kitty/theme.conf" }
 cava = { src = "cava", target = "~/.config/cava/themes/framework" }
 nvim = { src = "nvim.lua", target = "~/.config/nvim/lua/theme/framework.lua" }
+hyprland = { src = "colorTheme.lua", target = "~/.config/hypr/lua/colorTheme.lua" }
 
 [hooks]
 # Shell commands run after every palette generation, skip all with --no-hooks
