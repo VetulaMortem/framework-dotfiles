@@ -197,7 +197,9 @@ Timer {
 		    }
                 }
             }
-	MediaControlWidget { }
+	    MediaControlWidget { 
+		    showIfNoPlayer: false
+	    }
         }
 	}
 

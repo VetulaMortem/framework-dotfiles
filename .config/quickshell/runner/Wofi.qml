@@ -23,6 +23,7 @@ PanelWindow {
     WlrLayershell.layer: WlrLayer.Overlay
     WlrLayershell.keyboardFocus: WlrKeyboardFocus.Exclusive
     WlrLayershell.namespace: "quickshell-runner"
+        exclusionMode: ExclusionMode.Ignore
 
     Shortcut {
         sequence: "Escape"
@@ -191,7 +192,8 @@ function selectClipboardItem(item) {
     }
 
     Rectangle {
-        anchors.centerIn: parent
+	id: wofi    
+	anchors.centerIn: parent
         implicitWidth: rowlayout.width + 40
         implicitHeight: 500
         color: Theme.background
@@ -365,7 +367,12 @@ function selectClipboardItem(item) {
             }
         }
     }
-
+    MediaControlWidget {
+	    width: wofi.width
+	    anchors.top: wofi.bottom
+	    anchors.horizontalCenter: wofi.horizontalCenter
+	    anchors.topMargin: 5
+    }
     onVisibleChanged: {
         if (visible) {
             setMode("apps"); // Öffnet standardmäßig im App-Modus

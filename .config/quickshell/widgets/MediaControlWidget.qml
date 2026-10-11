@@ -13,13 +13,13 @@ width: 340
 height: 220
 color: Theme.background
 border.color: Theme.border
-border.width: 1
+border.width: Theme.width
 radius: 12
 
 /* STREAMING_CHUNK:Internal state for selected player management */
 property var activePlayer: null
 property var availablePlayers: Mpris.players
-
+property bool showIfNoPlayer: true
 /* STREAMING_CHUNK:Selecting default active player when players list updates */
 Connections {
     target: Mpris
@@ -34,6 +34,7 @@ Component.onCompleted: {
     if (Mpris.players.values.length > 0) {
         root.activePlayer = Mpris.players.values[0]
     }
+    root.visible = showIfNoPlayer ? true : root.activePlayer
 }
 
 /* STREAMING_CHUNK:Building the main layout */
