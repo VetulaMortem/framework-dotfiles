@@ -10,3 +10,6 @@ Wofi 1.0 runner/Wofi.qml
 NotificationServer 1.0 notifications/NotificationServer.qml
 NotificationCenter 1.0 notifications/NotificationCenter.qml
 IdleInhibitor 1.0 stuff/IdleInhibitor.qml
+LockScreen 1.0 lockscreen/LockScreen.qml
+CrossHair 1.0 stuff/CrossHair.qml
+WallpaperSwitcher 1.0 stuff/WallpaperSwitcher.qml

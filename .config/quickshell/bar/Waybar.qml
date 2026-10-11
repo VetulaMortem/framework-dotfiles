@@ -355,6 +355,22 @@ visible: {
                     }
                 }
             }
+            Row {
+                spacing: 4
+                BaseText {
+                    font.bold: true
+                    color: StateStore.crossHair ? Theme.primary : Theme.text
+                    text: ""
+			//TODO Idle controll
+                    MouseArea {
+                        anchors.fill: parent
+                        cursorShape: Qt.PointingHandCursor
+                        onClicked: {
+				StateStore.crossHair = !StateStore.crossHair 
+			}
+                    }
+                }
+            }
             // Akku (UPower)
             Row {
                 spacing: 4

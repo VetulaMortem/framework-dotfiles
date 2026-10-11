@@ -13,7 +13,7 @@ PanelWindow {
     implicitWidth: 0
 	color: "transparent"
 	Loader {
-		active: root.idleInhibited
+		active: StateStore.idleInhibited
 		sourceComponent: IdleInhibitor {
 			window: root
 			enabled: true

@@ -13,7 +13,12 @@ if [ -n "$MANUAL_THEME" ] && [ -f "$MANUAL_THEME" ]; then
     cp -v $HOME/.assets/kitty_themes/$themename.conf $HOME/.config/kitty/theme.conf 
     cp -v $HOME/.assets/cava_themes/$themename $HOME/.config/cava/themes/framework
     cp -v $HOME/.assets/nvim_themes/$themename.lua $HOME/.config/nvim/lua/theme/framework.lua
+    cp -v $HOME/.assets/hypr_themes/$themename.lua $HOME/.config/hypr/lua/colorTheme.lua
 else
     echo "Lasse Wallust Farben generieren..."
     wallust run "$NEW_WALLPAPER"
 fi
+
+cd $HOME/.assets
+rm eDP-1
+ln -s $NEW_WALLPAPER eDP-1

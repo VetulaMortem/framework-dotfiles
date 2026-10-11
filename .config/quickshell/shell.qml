@@ -16,6 +16,9 @@ ShellRoot {
     NotificationServer {}
     NotificationCenter {}
     IdleInhibitor {}
+    LockScreen {}
+    CrossHair {}
+    WallpaperSwitcher {}
 
 
 Scope {
