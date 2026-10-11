@@ -7,19 +7,20 @@ function M.setup()
 
   local hi = vim.api.nvim_set_hl
 
-local p = {
-  bg        = "#0B1418",
-  bg_alt    = "#9FA6BB",          -- Nutzen oft ein dunkles Grau/Secondary Background
-  fg        = "#D0D7EE",
-  red       = "#5A6028",          -- Standard-Rot in Themes
-  orange    = "#1A6249",         -- Oder color3/color11 für Orange-Töne
-  yellow    = "#1A6249",          -- Standard-Gelb
-  blue      = "#9BA09C",          -- Standard-Blau
-  green     = "#1D6F6F",          -- Standard-Grün
-  magenta   = "#57826C",          -- Standard-Magenta / Purple
-  brown     = "#001018",  -- Falls du hier einen dunklen Erdton brauchst
-  comment   = "#7F869A",          -- Kommentare / Muted Text sind meistens color8 (bright black)
-}
+  local p = {
+    bg        = "#282828",
+    bg_alt    = "#31342B",
+    fg        = "#ffffff",
+    red       = "#BB2A39",
+    orange    = "#FE7446",
+    yellow    = "#ffb703",
+    blue      = "#6167AD",
+    green     = "#5CBD88",
+    magenta   = "#c44569",
+    brown     = "#5a3e36",
+    comment   = "#8a6d63",
+  }
+
 
   -------------------------------------------------
   -- Base UI
