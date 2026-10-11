@@ -12,7 +12,7 @@ hl.layer_rule({
 })
 hl.layer_rule({
 	name="layer-slide-top",
-	match = {namespace = "^(waybar|quickshell-bar)$"},
+	match = {namespace = "^(quickshell-lock|quickshell-bar)$"},
 	animation = "slide top",
 })
 hl.layer_rule({
@@ -22,6 +22,15 @@ hl.layer_rule({
 	--no_screen_share = true,
 	dim_around = true,
 	blur = true,
+})
+hl.layer_rule({
+	match = {namespace = "^(quickshell-wallpaperswitcher|quickshell-osd)$"},
+	animation = "slide bottom linear",
+	no_screen_share = false,
+})
+hl.layer_rule({
+	match = {namespace = "^(quickshell-wallpaperswitcher)$"},
+	dim_around = true
 })
 hl.layer_rule({
 	name="layer-slide-bottom",
