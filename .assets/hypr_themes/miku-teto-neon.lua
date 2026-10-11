@@ -1,0 +1,7 @@
+nvimBorder = "5E5787ff"
+ytBorder = "5E5787"
+steamBorder = "13121A"
+pipBorder = "6C344B"
+activeBorder1 = "5E223Fee"
+activeBorder2 = "0E5178ee"
+inactiveBorder = "316A92aa"
