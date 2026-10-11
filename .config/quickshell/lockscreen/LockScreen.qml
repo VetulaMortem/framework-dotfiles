@@ -197,6 +197,7 @@ Timer {
 		    }
                 }
             }
+	MediaControlWidget { }
         }
 	}
 
@@ -204,10 +205,12 @@ Timer {
         target: "lockscreen"
 
         function lock(): void {
-		isLocking = true;
-		delayTimer.restart();
-		delayTimer3.restart();
-    }
+		if(!isLocked){
+			isLocking = true;
+			delayTimer.restart();
+			delayTimer3.restart();
+                }
+        }     
     	function forceUnlock(): void {
 		isLocked = false;
 	}

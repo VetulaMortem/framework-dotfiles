@@ -18,6 +18,7 @@ PanelWindow {
 	property int volumeLevel: AudioStore.volumeLevel
 	property bool isMuted: AudioStore.isMuted
 
+
 Process {
         id: floatingcounter
         // Nutzt die ID des aktiven Workspaces

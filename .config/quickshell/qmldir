@@ -13,3 +13,4 @@ IdleInhibitor 1.0 stuff/IdleInhibitor.qml
 LockScreen 1.0 lockscreen/LockScreen.qml
 CrossHair 1.0 stuff/CrossHair.qml
 WallpaperSwitcher 1.0 stuff/WallpaperSwitcher.qml
+MediaControlWidget 1.0 widgets/MediaControlWidget.qml
