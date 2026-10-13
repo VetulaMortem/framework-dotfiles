@@ -367,12 +367,6 @@ function selectClipboardItem(item) {
             }
         }
     }
-    MediaControlWidget {
-	    width: wofi.width
-	    anchors.top: wofi.bottom
-	    anchors.horizontalCenter: wofi.horizontalCenter
-	    anchors.topMargin: 5
-    }
     onVisibleChanged: {
         if (visible) {
             setMode("apps"); // Öffnet standardmäßig im App-Modus

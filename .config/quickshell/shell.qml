@@ -19,6 +19,7 @@ ShellRoot {
     LockScreen {}
     CrossHair {}
     WallpaperSwitcher {}
+    BrightnessOverlay {}
 
 
 Scope {
