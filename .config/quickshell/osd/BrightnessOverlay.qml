@@ -11,7 +11,7 @@ Scope {
     property int brightnessPercent: 0
     property int maxBrightness: 100
     property int currentBrightness: 0
-    property bool isVisible: true
+    property bool isVisible: false 
 
     // Timer zum Ausblenden nach 5 Sekunden
     Timer {

@@ -6,9 +6,9 @@ gradient = 1
 
 # Ein schöner Farbverlauf von dunkleren Akzenten zu helleren Highlights
 gradient_count = 6
-gradient_color_1 = '#5E223F'
-gradient_color_2 = '#0E5178'
-gradient_color_3 = '#747057'
-gradient_color_4 = '#5E5787'
-gradient_color_5 = '#6C344B'
-gradient_color_6 = '#787D86'
+gradient_color_1 = '#5F1012'
+gradient_color_2 = '#4D2013'
+gradient_color_3 = '#D22028'
+gradient_color_4 = '#7C7838'
+gradient_color_5 = '#242211'
+gradient_color_6 = '#1A263F'
